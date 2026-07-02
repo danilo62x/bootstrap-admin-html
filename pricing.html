@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Planos — Admin Template</title>
+  
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-8">
+      <div class="text-center">
+        <h1 class="text-title-md font-bold text-heading">Planos & Preços</h1>
+        <p class="mx-auto mt-3 max-w-2xl text-sm text-muted md:text-base">Escolha o plano ideal para sua empresa. Sem taxas ocultas.</p>
+        <div class="surface-card mt-6 inline-flex items-center gap-3 rounded-full border border-themed bg-card-bg p-1.5">
+          <button id="toggle-monthly" class="btn btn-brand rounded-full bg-brand-500 px-4 py-1.5 text-sm font-medium text-white shadow-theme-xs">Mensal</button>
+          <button id="toggle-annual" class="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-body">
+            Anual
+            <span class="rounded-full bg-success-100 px-1.5 text-[10px] font-bold text-success-700 dark:bg-success-500/20 dark:text-success-400">-20%</span>
+          </button>
+        </div>
+      </div>
+      <div id="plans-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    let annual = false;
+    const PLANS = [
+      { name: 'Start', desc: 'Ideal para começar', icon: 'zap', color: '#0ba5ec', m: 49, a: 39, cta: 'Começar grátis', featured: false,
+        features: [['Até 3 usuários', 1], ['5 GB de armazenamento', 1], ['Suporte por email', 1], ['API access', 0]] },
+      { name: 'Pro', desc: 'Para times em crescimento', icon: 'rocket', color: '#465fff', m: 129, a: 103, cta: 'Assinar Pro', featured: true,
+        features: [['Até 15 usuários', 1], ['100 GB de armazenamento', 1], ['Suporte prioritário', 1], ['API access completo', 1]] },
+      { name: 'Enterprise', desc: 'Para grandes organizações', icon: 'shield', color: '#7c3aed', m: 399, a: 319, cta: 'Falar com vendas', featured: false,
+        features: [['Usuários ilimitados', 1], ['Armazenamento ilimitado', 1], ['Suporte dedicado 24/7', 1], ['SLA 99,99%', 1]] },
+    ];
+
+    function render() {
+      document.getElementById('plans-grid').innerHTML = PLANS.map((p) => `
+        <div class="surface-card relative flex flex-col rounded-2xl border p-6 transition ${p.featured ? 'border-brand-500 shadow-theme-lg ring-1 ring-brand-500/30' : 'border-themed shadow-theme-sm'}">
+          ${p.featured ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Mais popular</div>' : ''}
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl" style="background: ${p.color}22; color: ${p.color}">${icon(p.icon, { size: 22 })}</div>
+          <h3 class="mt-4 text-xl font-bold text-heading">${p.name}</h3>
+          <p class="mt-1 text-sm text-muted">${p.desc}</p>
+          <div class="mt-5 flex items-baseline gap-1">
+            <span class="text-sm text-muted">R$</span>
+            <span class="text-4xl font-bold text-heading">${annual ? p.a : p.m}</span>
+            <span class="text-sm text-muted">/mês</span>
+          </div>
+          <p class="mt-1 text-xs text-muted">${annual ? 'Cobrado anualmente' : 'Pagamento mensal'}</p>
+          <button class="btn btn-brand mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-medium transition ${p.featured ? 'bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600' : 'border border-themed text-body hover:bg-gray-50 dark:hover:bg-gray-800'}">${p.cta}</button>
+          <ul class="mt-6 space-y-3 border-t border-themed pt-5">
+            ${p.features.map(([t, inc]) => `<li class="flex items-start gap-3 text-sm">${icon(inc ? 'check' : 'x', { size: 16, strokeWidth: 2.5, className: inc ? 'shrink-0 text-success-500' : 'shrink-0 text-gray-300' })}<span class="${inc ? 'text-body' : 'text-muted line-through'}">${t}</span></li>`).join('')}
+          </ul>
+        </div>`).join('');
+    }
+
+    document.getElementById('toggle-monthly').addEventListener('click', () => {
+      annual = false;
+      document.getElementById('toggle-monthly').className = 'rounded-full bg-brand-500 px-4 py-1.5 text-sm font-medium text-white shadow-theme-xs';
+      document.getElementById('toggle-annual').className = 'flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-body';
+      document.getElementById('toggle-annual').innerHTML = 'Anual <span class="rounded-full bg-success-100 px-1.5 text-[10px] font-bold text-success-700 dark:bg-success-500/20 dark:text-success-400">-20%</span>';
+      render();
+    });
+    document.getElementById('toggle-annual').addEventListener('click', () => {
+      annual = true;
+      document.getElementById('toggle-annual').className = 'flex items-center gap-2 rounded-full bg-brand-500 px-4 py-1.5 text-sm font-medium text-white shadow-theme-xs';
+      document.getElementById('toggle-annual').innerHTML = 'Anual <span class="rounded-full bg-success-100 px-1.5 text-[10px] font-bold text-success-700 dark:bg-success-500/20 dark:text-success-400">-20%</span>';
+      document.getElementById('toggle-monthly').className = 'rounded-full px-4 py-1.5 text-sm font-medium text-body';
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>

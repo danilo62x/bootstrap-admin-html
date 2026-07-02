@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Formulários — Admin Template</title>
+  
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-title-sm font-bold text-heading">Formulários</h1>
+        <p class="mt-1 text-sm text-muted">Inputs, selects, checkboxes e validação inline.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6">
+            <h3 class="text-base font-semibold text-heading">Dados pessoais</h3>
+            <p class="mt-0.5 text-xs text-muted">Preencha as informações do cliente</p>
+          </header>
+          <form id="form-personal" class="space-y-5 p-5 md:p-6">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label class="mb-2 block text-sm font-medium text-heading">Nome <span class="text-error-500">*</span></label>
+                <input type="text" placeholder="João da Silva" class="form-control surface-card h-11 w-full rounded-lg border border-themed bg-card-bg px-3 text-sm text-body outline-none focus:border-brand-300" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-heading">Email</label>
+                <input type="email" placeholder="email@exemplo.com" class="form-control surface-card h-11 w-full rounded-lg border border-themed bg-card-bg px-3 text-sm text-body outline-none focus:border-brand-300" />
+              </div>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">País</label>
+              <select class="form-select surface-card h-11 w-full rounded-lg border border-themed bg-card-bg px-3 text-sm text-body outline-none focus:border-brand-300">
+                <option>Brasil</option><option>Portugal</option><option>Estados Unidos</option>
+              </select>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">Mensagem</label>
+              <textarea rows="4" placeholder="Escreva aqui..." class="form-control surface-card w-full rounded-lg border border-themed bg-card-bg px-3 py-2.5 text-sm text-body outline-none focus:border-brand-300"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-themed pt-4">
+              <button type="button" class="h-10 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+              <button type="submit" class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">Salvar</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6">
+            <h3 class="text-base font-semibold text-heading">Variações de input</h3>
+          </header>
+          <div class="space-y-5 p-5 md:p-6">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">Padrão</label>
+              <input placeholder="Texto..." class="form-control surface-card h-11 w-full rounded-lg border border-themed bg-card-bg px-3 text-sm outline-none focus:border-brand-300" />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">Com sucesso</label>
+              <input value="João da Silva" class="form-control h-11 w-full rounded-lg border border-success-500 bg-success-50/40 px-3 text-sm text-success-800 outline-none dark:border-success-500/40 dark:bg-success-500/10 dark:text-success-300" />
+              <p class="mt-1 text-xs text-success-600">Tudo certo!</p>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">Com erro</label>
+              <input value="invalid@" class="form-control h-11 w-full rounded-lg border border-error-500 bg-error-50/40 px-3 text-sm text-error-800 outline-none dark:border-error-500/40 dark:bg-error-500/10 dark:text-error-300" />
+              <p class="mt-1 text-xs text-error-600">Email inválido</p>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-heading">Desabilitado</label>
+              <input value="Bloqueado" disabled class="form-control h-11 w-full cursor-not-allowed rounded-lg border border-themed bg-gray-50 px-3 text-sm text-gray-400 dark:bg-gray-900" />
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="assets/js/layout.js"></script>
+  <script>
+    document.getElementById('form-personal').addEventListener('submit', (e) => {
+      e.preventDefault();
+      notify('Formulário salvo com sucesso!', 'success');
+    });
+  </script>
+</body>
+</html>

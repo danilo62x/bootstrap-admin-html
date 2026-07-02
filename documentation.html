@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Documentação — Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-title-sm font-bold text-heading">Documentação</h1>
+        <p class="mt-1 text-sm text-muted">Guia completo de uso do template e da API.</p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
+        <!-- Sidebar TOC -->
+        <aside class="lg:sticky lg:top-24 lg:self-start">
+          <div class="surface-card rounded-2xl border p-4 shadow-theme-sm">
+            <div class="relative mb-3">
+              <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" data-icon="search" data-size="16"></span>
+              <input id="doc-search" placeholder="Buscar na documentação..." class="h-9 w-full rounded-lg border border-themed bg-gray-50 pl-9 pr-3 text-sm text-body outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+            </div>
+            <p class="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted">Nesta página</p>
+            <nav id="toc" class="space-y-1"></nav>
+            <p id="toc-empty" class="hidden px-3 py-2 text-sm text-muted">Nenhuma seção encontrada.</p>
+          </div>
+        </aside>
+
+        <!-- Main content -->
+        <article class="surface-card rounded-2xl border p-6 shadow-theme-sm md:p-8">
+          <div class="max-w-none space-y-10">
+            <!-- Introdução -->
+            <section class="space-y-4">
+              <h2 id="introducao" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">Introdução</h2>
+              <p class="text-sm leading-relaxed text-body">
+                Bem-vindo à documentação do <strong class="text-heading">Admin Template</strong>. Este guia
+                cobre desde a instalação até o uso avançado dos componentes e da API. O template é construído com
+                React 19, Vite 6, Tailwind CSS 4 e TypeScript, priorizando performance e suporte completo a modo
+                escuro.
+              </p>
+              <div class="rounded-xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-500/30 dark:bg-brand-500/10">
+                <div class="flex items-start gap-3">
+                  <span class="mt-0.5 text-brand-600 dark:text-brand-400" data-icon="info" data-size="18"></span>
+                  <div>
+                    <p class="text-sm font-semibold text-brand-700 dark:text-brand-400">Dica</p>
+                    <p class="mt-1 text-sm text-brand-700/90 dark:text-brand-300">
+                      Recomendamos usar Node.js 20 ou superior para garantir compatibilidade total com o Vite 6.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Instalação -->
+            <section class="space-y-4">
+              <h2 id="instalacao" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">Instalação</h2>
+              <p class="text-sm leading-relaxed text-body">
+                Clone o repositório e instale as dependências usando seu gerenciador de pacotes preferido:
+              </p>
+              <div class="group relative my-4 overflow-hidden rounded-xl bg-gray-900">
+                <button type="button" data-copy class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 text-xs font-medium text-gray-300 opacity-0 transition hover:bg-white/20 group-hover:opacity-100">
+                  <span data-icon="copy" data-size="13"></span> Copiar
+                </button>
+                <pre class="overflow-x-auto p-4 text-sm leading-relaxed text-gray-100"><code># Clonar o projeto
+git clone https://github.com/acme/admin-template.git
+cd admin-template
+
+# Instalar dependências
+npm install
+
+# Iniciar o servidor de desenvolvimento
+npm run dev</code></pre>
+              </div>
+              <p class="text-sm leading-relaxed text-body">
+                A aplicação ficará disponível em
+                <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-brand-600 dark:bg-gray-800 dark:text-brand-400">http://localhost:5173</code>.
+              </p>
+            </section>
+
+            <!-- Configuração -->
+            <section class="space-y-4">
+              <h2 id="configuracao" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">Configuração</h2>
+              <p class="text-sm leading-relaxed text-body">
+                As variáveis de ambiente são definidas em um arquivo
+                <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-brand-600 dark:bg-gray-800 dark:text-brand-400">.env</code> na raiz do projeto:
+              </p>
+              <div class="group relative my-4 overflow-hidden rounded-xl bg-gray-900">
+                <button type="button" data-copy class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 text-xs font-medium text-gray-300 opacity-0 transition hover:bg-white/20 group-hover:opacity-100">
+                  <span data-icon="copy" data-size="13"></span> Copiar
+                </button>
+                <pre class="overflow-x-auto p-4 text-sm leading-relaxed text-gray-100"><code>VITE_API_URL=https://api.acme.com.br
+VITE_APP_NAME="Admin Template"
+VITE_ENABLE_ANALYTICS=true</code></pre>
+              </div>
+              <div class="rounded-xl border border-warning-200 bg-warning-50 p-4 dark:border-warning-500/30 dark:bg-warning-500/10">
+                <div class="flex items-start gap-3">
+                  <span class="mt-0.5 text-warning-600 dark:text-warning-500" data-icon="info" data-size="18"></span>
+                  <div>
+                    <p class="text-sm font-semibold text-warning-700 dark:text-warning-500">Atenção</p>
+                    <p class="mt-1 text-sm text-warning-700/90 dark:text-warning-300">
+                      Nunca faça commit do arquivo <code class="font-mono">.env</code> em repositórios públicos.
+                      Adicione-o ao <code class="font-mono">.gitignore</code>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Componentes -->
+            <section class="space-y-4">
+              <h2 id="componentes" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">Componentes</h2>
+              <p class="text-sm leading-relaxed text-body">
+                O template inclui um conjunto de componentes reutilizáveis. A tabela abaixo resume os principais:
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead class="border-b border-themed text-xs uppercase tracking-wide text-muted">
+                    <tr>
+                      <th class="py-3 pr-4 font-medium">Componente</th>
+                      <th class="py-3 pr-4 font-medium">Descrição</th>
+                      <th class="py-3 pr-4 font-medium">Props</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-themed">
+                    <tr class="text-body">
+                      <td class="py-3 pr-4 font-mono text-xs text-brand-600 dark:text-brand-400">CardComponent</td>
+                      <td class="py-3 pr-4">Container de seção com cabeçalho e rodapé.</td>
+                      <td class="py-3 pr-4 text-muted">title, icon, footer</td>
+                    </tr>
+                    <tr class="text-body">
+                      <td class="py-3 pr-4 font-mono text-xs text-brand-600 dark:text-brand-400">StatsCard</td>
+                      <td class="py-3 pr-4">Cartão de métrica com tendência.</td>
+                      <td class="py-3 pr-4 text-muted">value, accent, trend</td>
+                    </tr>
+                    <tr class="text-body">
+                      <td class="py-3 pr-4 font-mono text-xs text-brand-600 dark:text-brand-400">DataTable</td>
+                      <td class="py-3 pr-4">Tabela com ordenação e paginação.</td>
+                      <td class="py-3 pr-4 text-muted">columns, data</td>
+                    </tr>
+                    <tr class="text-body">
+                      <td class="py-3 pr-4 font-mono text-xs text-brand-600 dark:text-brand-400">IconBase</td>
+                      <td class="py-3 pr-4">Renderiza ícones SVG por nome.</td>
+                      <td class="py-3 pr-4 text-muted">name, size</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-sm leading-relaxed text-body">Exemplo de uso do <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-brand-600 dark:bg-gray-800 dark:text-brand-400">StatsCard</code>:</p>
+              <div class="group relative my-4 overflow-hidden rounded-xl bg-gray-900">
+                <button type="button" data-copy class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 text-xs font-medium text-gray-300 opacity-0 transition hover:bg-white/20 group-hover:opacity-100">
+                  <span data-icon="copy" data-size="13"></span> Copiar
+                </button>
+                <pre class="overflow-x-auto p-4 text-sm leading-relaxed text-gray-100"><code>import StatsCard from '@/components/ui/StatsCard'
+
+&lt;StatsCard
+  title="Receita"
+  value="R$ 89.450"
+  icon="dollar"
+  accent="brand"
+  trend="up"
+  trendValue="11,01%"
+/&gt;</code></pre>
+              </div>
+            </section>
+
+            <!-- API -->
+            <section class="space-y-4">
+              <h2 id="api" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">API</h2>
+              <p class="text-sm leading-relaxed text-body">
+                A API REST utiliza autenticação via token Bearer. Inclua o cabeçalho
+                <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-brand-600 dark:bg-gray-800 dark:text-brand-400">Authorization</code>
+                em todas as requisições autenticadas:
+              </p>
+              <div class="group relative my-4 overflow-hidden rounded-xl bg-gray-900">
+                <button type="button" data-copy class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 text-xs font-medium text-gray-300 opacity-0 transition hover:bg-white/20 group-hover:opacity-100">
+                  <span data-icon="copy" data-size="13"></span> Copiar
+                </button>
+                <pre class="overflow-x-auto p-4 text-sm leading-relaxed text-gray-100"><code>curl https://api.acme.com.br/v1/users \
+  -H "Authorization: Bearer SEU_TOKEN" \
+  -H "Content-Type: application/json"</code></pre>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead class="border-b border-themed text-xs uppercase tracking-wide text-muted">
+                    <tr>
+                      <th class="py-3 pr-4 font-medium">Método</th>
+                      <th class="py-3 pr-4 font-medium">Endpoint</th>
+                      <th class="py-3 pr-4 font-medium">Descrição</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-themed">
+                    <tr class="text-body">
+                      <td class="py-3 pr-4"><span class="rounded bg-success-50 px-2 py-0.5 font-mono text-xs font-semibold text-success-700 dark:bg-success-500/15 dark:text-success-500">GET</span></td>
+                      <td class="py-3 pr-4 font-mono text-xs text-body">/v1/users</td>
+                      <td class="py-3 pr-4 text-muted">Lista todos os usuários.</td>
+                    </tr>
+                    <tr class="text-body">
+                      <td class="py-3 pr-4"><span class="rounded bg-brand-50 px-2 py-0.5 font-mono text-xs font-semibold text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">POST</span></td>
+                      <td class="py-3 pr-4 font-mono text-xs text-body">/v1/users</td>
+                      <td class="py-3 pr-4 text-muted">Cria um novo usuário.</td>
+                    </tr>
+                    <tr class="text-body">
+                      <td class="py-3 pr-4"><span class="rounded bg-error-50 px-2 py-0.5 font-mono text-xs font-semibold text-error-600 dark:bg-error-500/15 dark:text-error-500">DELETE</span></td>
+                      <td class="py-3 pr-4 font-mono text-xs text-body">/v1/users/:id</td>
+                      <td class="py-3 pr-4 text-muted">Remove um usuário.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="space-y-4">
+              <h2 id="faq" class="scroll-mt-24 border-b border-themed pb-2 text-xl font-bold text-heading">FAQ</h2>
+              <div id="faq-list" class="space-y-3"></div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    function toast(msg) {
+      if (window.notifySuccess) return window.notifySuccess(msg);
+      if (window.notify) return window.notify(msg);
+      alert(msg);
+    }
+
+    const SECTIONS = [
+      { id: 'introducao', label: 'Introdução', icon: 'info' },
+      { id: 'instalacao', label: 'Instalação', icon: 'download' },
+      { id: 'configuracao', label: 'Configuração', icon: 'settings' },
+      { id: 'componentes', label: 'Componentes', icon: 'grid' },
+      { id: 'api', label: 'API', icon: 'globe' },
+      { id: 'faq', label: 'FAQ', icon: 'help' },
+    ];
+
+    let active = 'introducao';
+
+    function renderToc(search) {
+      const q = (search || '').trim().toLowerCase();
+      const filtered = q ? SECTIONS.filter((s) => s.label.toLowerCase().includes(q)) : SECTIONS;
+      const toc = document.getElementById('toc');
+      const empty = document.getElementById('toc-empty');
+      toc.innerHTML = filtered.map((s) => `
+        <a href="#${s.id}" data-id="${s.id}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
+          active === s.id
+            ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-400'
+            : 'text-body hover:bg-gray-50 dark:hover:bg-gray-800'
+        }">${icon(s.icon, { size: 16 })} ${s.label}</a>`).join('');
+      empty.classList.toggle('hidden', filtered.length !== 0);
+      toc.querySelectorAll('a[data-id]').forEach((a) => a.addEventListener('click', () => {
+        active = a.dataset.id;
+        renderToc(document.getElementById('doc-search').value);
+      }));
+    }
+
+    // FAQ
+    const FAQ = [
+      { q: 'Posso usar o template em projetos comerciais?', a: 'Sim. A licença permite uso em projetos comerciais ilimitados após a compra.' },
+      { q: 'O template suporta modo escuro?', a: 'Sim, todo o template foi construído com suporte nativo a modo claro e escuro via classes dark:.' },
+      { q: 'Como reporto um bug?', a: 'Abra uma issue no repositório do GitHub com passos para reproduzir o problema.' },
+    ];
+    document.getElementById('faq-list').innerHTML = FAQ.map((item) => `
+      <div class="rounded-xl border border-themed p-4">
+        <p class="flex items-center gap-2 text-sm font-semibold text-heading">
+          <span class="text-brand-500">${icon('help', { size: 16 })}</span>
+          ${item.q}
+        </p>
+        <p class="mt-2 pl-6 text-sm text-body">${item.a}</p>
+      </div>`).join('');
+
+    // Render inline icons declared via data-icon
+    document.querySelectorAll('[data-icon]').forEach((el) => {
+      el.innerHTML = icon(el.dataset.icon, { size: Number(el.dataset.size) || 20 });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('[data-copy]').forEach((btn) => btn.addEventListener('click', () => {
+      const code = btn.parentElement.querySelector('code');
+      const text = code ? code.textContent : '';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => toast('Código copiado!')).catch(() => toast('Código copiado!'));
+      } else {
+        toast('Código copiado!');
+      }
+    }));
+
+    // Search filter
+    document.getElementById('doc-search').addEventListener('input', (e) => renderToc(e.target.value));
+    renderToc('');
+  </script>
+</body>
+</html>

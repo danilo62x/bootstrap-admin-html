@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Dashboard — Admin Template</title>
+  
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-title-sm font-bold text-heading">Dashboard</h1>
+          <p class="mt-1 text-sm text-muted">Visão geral do desempenho dos últimos 30 dias.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="form-select surface-card h-10 rounded-lg border border-themed bg-card-bg px-3 text-sm text-body outline-none focus:border-brand-300">
+            <option>Últimos 30 dias</option>
+            <option>Últimos 7 dias</option>
+            <option>Este mês</option>
+          </select>
+          <button class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">Novo relatório</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div id="stats-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+
+      <!-- Revenue + Traffic -->
+      <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <section class="surface-card xl:col-span-2 rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6">
+            <h3 class="text-base font-semibold text-heading">Receita mensal</h3>
+            <p class="mt-0.5 text-xs text-muted">Comparativo do trimestre</p>
+          </header>
+          <div id="revenue-list" class="space-y-4 p-5 md:p-6"></div>
+        </section>
+
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6">
+            <h3 class="text-base font-semibold text-heading">Origens de tráfego</h3>
+            <p class="mt-0.5 text-xs text-muted">Top 5 canais</p>
+          </header>
+          <ul id="traffic-list" class="space-y-4 p-5 md:p-6"></ul>
+        </section>
+      </div>
+
+      <!-- Recent activity -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6">
+          <h3 class="text-base font-semibold text-heading">Atividade recente</h3>
+          <p class="mt-0.5 text-xs text-muted">Últimas transações registradas</p>
+        </header>
+        <div class="overflow-x-auto p-5 md:p-6">
+          <table class="w-full text-left text-sm">
+            <thead class="border-b border-themed text-xs uppercase tracking-wide text-muted">
+              <tr>
+                <th class="py-3 pr-4 font-medium">Cliente</th>
+                <th class="py-3 pr-4 font-medium">Produto</th>
+                <th class="py-3 pr-4 font-medium">Valor</th>
+                <th class="py-3 pr-4 font-medium">Status</th>
+                <th class="py-3 pr-4 font-medium">Data</th>
+              </tr>
+            </thead>
+            <tbody id="activity-rows" class="divide-y divide-themed"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    const STATS = [
+      { title: 'Clientes', value: '3.782', icon: 'users', accent: 'brand', trend: 'up', delta: '11,01%' },
+      { title: 'Pedidos', value: '5.359', icon: 'shopping-bag', accent: 'success', trend: 'up', delta: '9,05%' },
+      { title: 'Receita', value: 'R$ 89.450', icon: 'dollar', accent: 'warning', trend: 'down', delta: '2,3%' },
+      { title: 'Produtos', value: '1.245', icon: 'package', accent: 'info', trend: 'up', delta: '4,8%' },
+    ];
+    const BG = { brand: 'bg-brand-50 dark:bg-brand-500/15', success: 'bg-success-50 dark:bg-success-500/15', warning: 'bg-warning-50 dark:bg-warning-500/15', error: 'bg-error-50 dark:bg-error-500/15', info: 'bg-blue-light-50 dark:bg-blue-light-500/15' };
+    const COL = { brand: 'text-brand-500', success: 'text-success-600', warning: 'text-warning-600', error: 'text-error-500', info: 'text-blue-light-500' };
+
+    document.getElementById('stats-grid').innerHTML = STATS.map((s) => `
+      <div class="surface-card rounded-2xl border p-5 shadow-theme-sm md:p-6">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl ${BG[s.accent]}">
+          <span class="${COL[s.accent]}">${icon(s.icon, { size: 22 })}</span>
+        </div>
+        <div class="mt-5 flex items-end justify-between">
+          <div>
+            <span class="text-sm text-muted">${s.title}</span>
+            <h4 class="mt-2 font-bold text-heading text-title-sm">${s.value}</h4>
+          </div>
+          <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${s.trend === 'up' ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' : 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500'}">
+            ${icon(s.trend === 'up' ? 'arrow-up' : 'arrow-down', { size: 12, strokeWidth: 2.5 })} ${s.delta}
+          </span>
+        </div>
+      </div>`).join('');
+
+    const REVENUE = [
+      { label: 'Jan', value: 60, amount: '24.580' },
+      { label: 'Fev', value: 75, amount: '32.910' },
+      { label: 'Mar', value: 45, amount: '18.430' },
+      { label: 'Abr', value: 88, amount: '41.220' },
+      { label: 'Mai', value: 92, amount: '47.890' },
+      { label: 'Jun', value: 70, amount: '29.110' },
+    ];
+    document.getElementById('revenue-list').innerHTML = REVENUE.map((r) => `
+      <div class="flex items-center gap-4">
+        <span class="w-12 text-xs font-medium text-muted">${r.label}</span>
+        <div class="flex h-3 flex-1 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+          <div class="bg-brand-500 transition-all" style="width: ${r.value}%"></div>
+        </div>
+        <span class="w-20 text-right text-sm font-medium text-heading">R$ ${r.amount}</span>
+      </div>`).join('');
+
+    const TRAFFIC = [
+      { label: 'Google', visitors: '12.450', delta: '+8,4%', bg: 'bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-400' },
+      { label: 'Direto', visitors: '8.210', delta: '+3,1%', bg: 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-500' },
+      { label: 'Instagram', visitors: '4.870', delta: '+15,2%', bg: 'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-500' },
+      { label: 'YouTube', visitors: '2.150', delta: '-1,8%', bg: 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500' },
+      { label: 'Email', visitors: '1.320', delta: '+0,9%', bg: 'bg-blue-light-50 text-blue-light-700 dark:bg-blue-light-500/15 dark:text-blue-light-500' },
+    ];
+    document.getElementById('traffic-list').innerHTML = TRAFFIC.map((s) => `
+      <li class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold ${s.bg}">${s.label.charAt(0)}</span>
+          <div>
+            <p class="text-sm font-medium text-heading">${s.label}</p>
+            <p class="text-xs text-muted">${s.visitors} visitantes</p>
+          </div>
+        </div>
+        <span class="text-xs font-semibold ${s.delta.startsWith('-') ? 'text-error-500' : 'text-success-600'}">${s.delta}</span>
+      </li>`).join('');
+
+    const ACTIVITY = [
+      { name: 'Marina Costa', initials: 'MC', product: 'Plano Pro', amount: '299,00', status: 'Pago', date: 'Hoje, 09:42' },
+      { name: 'Lucas Pereira', initials: 'LP', product: 'Plano Start', amount: '79,00', status: 'Pendente', date: 'Ontem, 18:11' },
+      { name: 'Aline Souza', initials: 'AS', product: 'Plano Pro', amount: '299,00', status: 'Pago', date: 'Ontem, 14:25' },
+      { name: 'Rafael Lima', initials: 'RL', product: 'Plano Enterprise', amount: '1.290,00', status: 'Recusado', date: '23 mai' },
+      { name: 'Bianca Rocha', initials: 'BR', product: 'Plano Start', amount: '79,00', status: 'Pago', date: '22 mai' },
+    ];
+    function statusClass(s) {
+      if (s === 'Pago') return 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-500';
+      if (s === 'Pendente') return 'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-500';
+      return 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500';
+    }
+    document.getElementById('activity-rows').innerHTML = ACTIVITY.map((r) => `
+      <tr class="text-body">
+        <td class="py-3 pr-4">
+          <div class="flex items-center gap-3">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-xs font-semibold text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">${r.initials}</span>
+            <span class="text-heading">${r.name}</span>
+          </div>
+        </td>
+        <td class="py-3 pr-4">${r.product}</td>
+        <td class="py-3 pr-4 font-medium text-heading">R$ ${r.amount}</td>
+        <td class="py-3 pr-4"><span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${statusClass(r.status)}">${r.status}</span></td>
+        <td class="py-3 pr-4 text-muted">${r.date}</td>
+      </tr>`).join('');
+  </script>
+</body>
+</html>

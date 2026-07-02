@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Gráficos — Admin Template</title>
+  
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-title-sm font-bold text-heading">Gráficos & Analytics</h1>
+        <p class="mt-1 text-sm text-muted">Visualizações SVG puras, leves e sem dependências.</p>
+      </div>
+
+      <div id="spark-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6">
+          <h3 class="text-base font-semibold text-heading">Receita mensal 2026</h3>
+          <p class="mt-0.5 text-xs text-muted">Comparativo trimestral</p>
+        </header>
+        <div id="bar-chart" class="overflow-x-auto p-5 md:p-6"></div>
+      </section>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Funil de conversão</h3></header>
+        <div id="funnel" class="space-y-3 p-5 md:p-6"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    function buildSpark(values) {
+      const w = 64, h = 36;
+      const max = Math.max(...values), min = Math.min(...values), range = max - min || 1;
+      const stepX = w / (values.length - 1);
+      const pts = values.map((v, i) => ({ x: i * stepX, y: h - 4 - ((v - min) / range) * (h - 8) }));
+      const linePath = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+      return { linePath, areaPath: `${linePath} L ${w} ${h} L 0 ${h} Z` };
+    }
+    const SPARKS = [
+      { key: 'rev', icon: 'dollar', label: 'Receita', value: 'R$ 128k', delta: '12,4%', up: true, color: '#465fff', ...buildSpark([18, 22, 19, 25, 28, 24, 30, 35, 32, 38, 36, 42]) },
+      { key: 'ord', icon: 'shopping-bag', label: 'Pedidos', value: '2.481', delta: '8,1%', up: true, color: '#12b76a', ...buildSpark([12, 18, 15, 22, 20, 28, 26, 32, 28, 36, 34, 40]) },
+      { key: 'cli', icon: 'users', label: 'Clientes', value: '948', delta: '3,2%', up: false, color: '#f79009', ...buildSpark([22, 25, 20, 28, 30, 26, 24, 28, 26, 24, 22, 20]) },
+      { key: 'cvr', icon: 'trending-up', label: 'Conversão', value: '3,87%', delta: '15,8%', up: true, color: '#0ba5ec', ...buildSpark([8, 10, 12, 11, 14, 16, 15, 18, 20, 22, 24, 26]) },
+    ];
+    document.getElementById('spark-grid').innerHTML = SPARKS.map((s) => `
+      <div class="surface-card flex items-center gap-4 rounded-2xl border p-4 shadow-theme-sm">
+        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl" style="background: ${s.color}22; color: ${s.color}">${icon(s.icon, { size: 20 })}</div>
+        <div class="flex-1">
+          <p class="text-lg font-bold text-heading">${s.value}</p>
+          <p class="text-xs text-muted">${s.label}</p>
+          <p class="mt-0.5 text-xs font-medium ${s.up ? 'text-success-600' : 'text-error-500'}">${s.up ? '▲' : '▼'} ${s.delta}</p>
+        </div>
+        <svg width="64" height="36" viewBox="0 0 64 36">
+          <defs><linearGradient id="grad-${s.key}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${s.color}" stop-opacity="0.4"/><stop offset="100%" stop-color="${s.color}" stop-opacity="0"/></linearGradient></defs>
+          <path d="${s.areaPath}" fill="url(#grad-${s.key})"/>
+          <path d="${s.linePath}" fill="none" stroke="${s.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>`).join('');
+
+    // Bar chart
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const values = [42, 58, 35, 72, 88, 65, 80, 95, 70, 102, 85, 110];
+    const pl = 36, pt = 20, pb = 30, w = 700, h = 280;
+    const chartW = w - pl - 10, chartH = h - pt - pb, max = 120, slot = chartW / months.length, bw = slot * 0.6;
+    const bars = values.map((v, i) => ({ x: pl + slot * i + (slot - bw) / 2, y: pt + chartH - (v / max) * chartH, w: bw, h: (v / max) * chartH, month: months[i], value: v }));
+    const grid = [0, 30, 60, 90, 120].map((v) => ({ y: pt + chartH - (v / max) * chartH, label: v + 'k' }));
+    document.getElementById('bar-chart').innerHTML = `
+      <svg width="100%" viewBox="0 0 700 280" class="min-w-[500px]">
+        ${grid.map((g) => `<line x1="${pl}" y1="${g.y}" x2="690" y2="${g.y}" stroke="var(--tx-border)" stroke-width="1" stroke-dasharray="4 4"/><text x="${pl - 8}" y="${g.y + 4}" text-anchor="end" font-size="10" fill="var(--tx-text-muted)">${g.label}</text>`).join('')}
+        ${bars.map((b) => `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="var(--color-brand-500)" opacity="0.9" rx="4"/><text x="${b.x + b.w / 2}" y="270" text-anchor="middle" font-size="10" fill="var(--tx-text-muted)">${b.month}</text>`).join('')}
+      </svg>`;
+
+    // Funnel
+    const FUNNEL = [
+      { label: 'Visitantes', value: 24800, pct: 100 },
+      { label: 'Visualizações de produto', value: 18650, pct: 75 },
+      { label: 'Carrinho', value: 8240, pct: 33 },
+      { label: 'Checkout iniciado', value: 4120, pct: 17 },
+      { label: 'Compra concluída', value: 2480, pct: 10 },
+    ];
+    document.getElementById('funnel').innerHTML = FUNNEL.map((step, i) => `
+      <div class="flex items-center gap-3">
+        <span class="w-6 text-xs font-semibold text-muted">${i + 1}</span>
+        <div class="flex-1">
+          <div class="mb-1 flex items-center justify-between text-xs">
+            <span class="font-medium text-heading">${step.label}</span>
+            <span class="text-muted">${step.value.toLocaleString('pt-BR')} · ${step.pct}%</span>
+          </div>
+          <div class="h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+            <div class="h-full rounded-full" style="width: ${step.pct}%; background: var(--color-brand-500)"></div>
+          </div>
+        </div>
+      </div>`).join('');
+  </script>
+</body>
+</html>

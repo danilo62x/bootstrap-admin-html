@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Componentes — Admin Template</title>
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-title-sm font-bold text-heading">Componentes</h1>
+        <p class="mt-1 text-sm text-muted">Biblioteca completa de UI: botões, badges, alertas, modais e mais.</p>
+      </div>
+
+      <!-- ===== BOTÕES ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6">
+          <h3 class="text-base font-semibold text-heading">Botões</h3>
+          <p class="mt-0.5 text-xs text-muted">Variações de cor, tamanho e estado</p>
+        </header>
+        <div class="p-5 md:p-6 space-y-5">
+          <div class="flex flex-wrap gap-3">
+            <button class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">Primário</button>
+            <button class="surface-card inline-flex h-10 items-center gap-2 rounded-lg border border-themed bg-card-bg px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">Secundário</button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-lg bg-success-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-success-600">Sucesso</button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-lg bg-warning-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-warning-600">Aviso</button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-lg bg-error-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-error-600">Perigo</button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-lg text-sm font-medium text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-500/15">Ghost</button>
+            <button class="inline-flex h-10 items-center gap-2 rounded-lg border-2 border-dashed border-gray-300 px-4 text-sm font-medium text-muted hover:border-brand-300 hover:text-brand-500 dark:border-gray-700" data-icon-prefix="plus">Tracejado</button>
+            <button class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white opacity-60" disabled>
+              <span class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></span>
+              Carregando
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 border-t border-themed pt-5">
+            <button class="btn btn-brand inline-flex h-7 items-center rounded-md bg-brand-500 px-2.5 text-xs font-medium text-white">XS</button>
+            <button class="btn btn-brand inline-flex h-9 items-center rounded-lg bg-brand-500 px-3 text-sm font-medium text-white">SM</button>
+            <button class="btn btn-brand inline-flex h-10 items-center rounded-lg bg-brand-500 px-4 text-sm font-medium text-white">MD</button>
+            <button class="btn btn-brand inline-flex h-12 items-center rounded-lg bg-brand-500 px-5 text-base font-medium text-white">LG</button>
+            <button class="btn btn-brand inline-flex h-14 items-center rounded-lg bg-brand-500 px-6 text-lg font-medium text-white">XL</button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 border-t border-themed pt-5">
+            <div class="surface-card inline-flex rounded-lg border border-themed bg-card-bg p-0.5">
+              <button class="btn btn-brand rounded-md bg-brand-500 px-3 py-1.5 text-xs font-medium text-white">Tab 1</button>
+              <button class="rounded-md px-3 py-1.5 text-xs font-medium text-body hover:bg-gray-100 dark:hover:bg-gray-800">Tab 2</button>
+              <button class="rounded-md px-3 py-1.5 text-xs font-medium text-body hover:bg-gray-100 dark:hover:bg-gray-800">Tab 3</button>
+            </div>
+            <span class="text-xs text-muted">Button group / tabs</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== BADGES + AVATARES ===== -->
+      <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Badges &amp; Tags</h3></header>
+          <div class="space-y-4 p-5 md:p-6">
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">Primário</span>
+              <span class="inline-flex rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500">Sucesso</span>
+              <span class="inline-flex rounded-full bg-warning-50 px-3 py-1 text-xs font-medium text-warning-700 dark:bg-warning-500/15 dark:text-warning-500">Aviso</span>
+              <span class="inline-flex rounded-full bg-error-50 px-3 py-1 text-xs font-medium text-error-600 dark:bg-error-500/15 dark:text-error-500">Perigo</span>
+              <span class="inline-flex rounded-full bg-blue-light-50 px-3 py-1 text-xs font-medium text-blue-light-600 dark:bg-blue-light-500/15 dark:text-blue-light-500">Info</span>
+              <span class="inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">Neutro</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1 rounded-full bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700 dark:bg-success-500/15">
+                <span class="h-1.5 w-1.5 rounded-full bg-success-500"></span> Online
+              </span>
+              <span class="inline-flex items-center gap-1 rounded-full bg-warning-50 px-2.5 py-1 text-xs font-medium text-warning-700 dark:bg-warning-500/15">
+                <span class="h-1.5 w-1.5 rounded-full bg-warning-500"></span> Pendente
+              </span>
+              <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 dark:bg-gray-800">
+                <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span> Offline
+              </span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex h-7 items-center gap-1.5 rounded-md border border-brand-200 bg-brand-50 px-2 text-xs font-medium text-brand-700 dark:border-brand-500/30 dark:bg-brand-500/10" data-icon-prefix="star">Premium</span>
+              <span class="surface-card inline-flex h-7 items-center rounded-md border border-themed bg-card-bg px-2 text-xs font-medium text-body">v2.0.0</span>
+              <span class="inline-flex h-7 items-center gap-1 rounded-md bg-brand-500 px-2 text-xs font-medium text-white" data-icon-prefix="check">Verificado</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Avatares</h3></header>
+          <div class="space-y-4 p-5 md:p-6">
+            <div class="flex items-end gap-3">
+              <span class="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white">XS</span>
+              <span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">SM</span>
+              <span class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-white">MD</span>
+              <span class="flex h-14 w-14 items-center justify-center rounded-full bg-brand-500 text-base font-bold text-white">LG</span>
+              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-brand-500 text-lg font-bold text-white">XL</span>
+            </div>
+            <div class="flex -space-x-2">
+              <span class="surface-card flex h-10 w-10 items-center justify-center rounded-full border-2 bg-brand-500 text-xs font-bold text-white" style="border-color: var(--tx-card-bg)">MC</span>
+              <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 bg-success-500 text-xs font-bold text-white" style="border-color: var(--tx-card-bg)">LP</span>
+              <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 bg-warning-500 text-xs font-bold text-white" style="border-color: var(--tx-card-bg)">AS</span>
+              <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 bg-error-500 text-xs font-bold text-white" style="border-color: var(--tx-card-bg)">RL</span>
+              <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 bg-gray-200 text-xs font-bold text-gray-700 dark:bg-gray-700 dark:text-gray-200" style="border-color: var(--tx-card-bg)">+5</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="relative">
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand-500 font-bold text-white">DC</span>
+                <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 bg-success-500" style="border-color: var(--tx-card-bg)"></span>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-heading">Daniela Costa</p>
+                <p class="text-xs text-muted">Online · Produto</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== PROGRESS BARS ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Barras de progresso</h3></header>
+        <div class="space-y-4 p-5 md:p-6">
+          <div id="progress-list" class="space-y-4"></div>
+          <div class="border-t border-themed pt-4">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">Variações circulares</p>
+            <div class="flex gap-6" id="progress-circles"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ALERTAS ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Alertas</h3></header>
+        <div class="space-y-3 p-5 md:p-6">
+          <div class="flex items-start gap-3 rounded-lg border border-success-200 bg-success-50 p-4 dark:border-success-500/30 dark:bg-success-500/10">
+            <span class="text-success-600 shrink-0" data-icon="check" data-icon-stroke="2.5"></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-success-800 dark:text-success-300">Operação concluída</p>
+              <p class="text-sm text-success-700 dark:text-success-400">As alterações foram salvas com sucesso.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-warning-200 bg-warning-50 p-4 dark:border-warning-500/30 dark:bg-warning-500/10">
+            <span class="text-warning-600 shrink-0" data-icon="bell"></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-warning-800 dark:text-warning-300">Atenção necessária</p>
+              <p class="text-sm text-warning-700 dark:text-warning-400">Revise os dados antes de continuar.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-error-200 bg-error-50 p-4 dark:border-error-500/30 dark:bg-error-500/10">
+            <span class="text-error-600 shrink-0" data-icon="x" data-icon-stroke="2.5"></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-error-800 dark:text-error-300">Erro ao processar</p>
+              <p class="text-sm text-error-700 dark:text-error-400">Tente novamente em alguns instantes.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 rounded-lg border border-blue-light-200 bg-blue-light-50 p-4 dark:border-blue-light-500/30 dark:bg-blue-light-500/10">
+            <span class="text-blue-light-600 shrink-0" data-icon="info"></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-blue-light-700 dark:text-blue-light-400">Informação</p>
+              <p class="text-sm text-blue-light-600 dark:text-blue-light-500">Esta é uma nota informativa.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== MODAIS ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6">
+          <h3 class="text-base font-semibold text-heading">Modais</h3>
+          <p class="mt-0.5 text-xs text-muted">Diálogos sobrepostos com ESC + backdrop click</p>
+        </header>
+        <div class="p-5 md:p-6">
+          <div class="flex flex-wrap gap-3">
+            <button data-modal-open="basic" class="btn btn-brand inline-flex h-10 items-center rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">Abrir modal</button>
+            <button data-modal-open="confirm" class="inline-flex h-10 items-center rounded-lg bg-warning-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-warning-600">Confirmar ação</button>
+            <button data-modal-open="delete" class="inline-flex h-10 items-center rounded-lg bg-error-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-error-600">Confirmação destrutiva</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TOASTS ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Toasts &amp; Notificações</h3></header>
+        <div class="flex flex-wrap gap-3 p-5 md:p-6">
+          <button data-toast="success" class="rounded-lg bg-success-500 px-4 py-2 text-sm font-medium text-white hover:bg-success-600">Sucesso</button>
+          <button data-toast="error" class="rounded-lg bg-error-500 px-4 py-2 text-sm font-medium text-white hover:bg-error-600">Erro</button>
+          <button data-toast="warning" class="rounded-lg bg-warning-500 px-4 py-2 text-sm font-medium text-white hover:bg-warning-600">Aviso</button>
+          <button data-toast="info" class="rounded-lg bg-blue-light-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-light-600">Info</button>
+        </div>
+      </section>
+
+      <!-- ===== DROPDOWNS + TOOLTIP ===== -->
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Dropdowns &amp; Tooltips</h3></header>
+        <div class="flex flex-wrap gap-4 p-5 md:p-6">
+          <div class="relative" id="dd-wrap">
+            <button id="dd-btn" type="button" class="inline-flex h-10 items-center gap-2 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">
+              Ações <span data-icon="chevron-down" data-icon-size="14"></span>
+            </button>
+            <div id="dd-menu" class="surface-card absolute left-0 mt-2 w-48 rounded-xl border shadow-theme-lg hidden">
+              <ul class="py-1 text-sm">
+                <li><button class="flex w-full items-center gap-2 px-4 py-2 text-body hover:bg-gray-50 dark:hover:bg-gray-800"><span data-icon="edit" data-icon-size="14"></span> Editar</button></li>
+                <li><button class="flex w-full items-center gap-2 px-4 py-2 text-body hover:bg-gray-50 dark:hover:bg-gray-800"><span data-icon="copy" data-icon-size="14"></span> Duplicar</button></li>
+                <li><button class="flex w-full items-center gap-2 px-4 py-2 text-body hover:bg-gray-50 dark:hover:bg-gray-800"><span data-icon="download" data-icon-size="14"></span> Exportar</button></li>
+                <li class="border-t border-themed"><button class="flex w-full items-center gap-2 px-4 py-2 text-error-600 hover:bg-error-50 dark:hover:bg-error-500/10"><span data-icon="trash" data-icon-size="14"></span> Excluir</button></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="group relative">
+            <button class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-themed text-muted hover:bg-gray-50 dark:hover:bg-gray-800">
+              <span data-icon="info" data-icon-size="16"></span>
+            </button>
+            <div class="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
+              Tooltip — passe o mouse aqui
+              <span class="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900"></span>
+            </div>
+          </div>
+
+          <div class="surface-card flex items-center gap-2 rounded-lg border border-themed bg-card-bg px-3 py-1.5 text-sm text-body">
+            <span>Filtros</span>
+            <span class="rounded-full bg-brand-500 px-1.5 text-xs text-white">3</span>
+            <span data-icon="filter" data-icon-size="14"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== MODAL CONTAINERS (rendered outside content tree) ===== -->
+    <div id="modal-basic" class="fixed inset-0 z-[80] items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm hidden">
+      <div class="surface-card relative w-full max-w-md overflow-hidden rounded-2xl border shadow-theme-xl">
+        <header class="flex items-center justify-between border-b border-themed px-5 py-4">
+          <div>
+            <h3 class="text-base font-semibold text-heading">Editar perfil</h3>
+            <p class="mt-0.5 text-xs text-muted">Atualize suas informações</p>
+          </div>
+          <button data-modal-close type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><span data-icon="x" data-icon-size="20"></span></button>
+        </header>
+        <div class="px-5 py-5 space-y-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-heading">Nome</label>
+            <input value="João da Silva" class="form-control h-11 w-full rounded-lg border border-themed bg-white px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-heading">Email</label>
+            <input type="email" placeholder="email@exemplo.com" class="form-control h-11 w-full rounded-lg border border-themed bg-white px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+          </div>
+        </div>
+        <footer class="flex items-center justify-end gap-2 border-t border-themed px-5 py-3">
+          <button data-modal-close class="h-9 rounded-lg border border-themed px-3 text-sm text-body hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+          <button data-modal-save class="btn btn-brand h-9 rounded-lg bg-brand-500 px-3 text-sm font-medium text-white hover:bg-brand-600">Salvar</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="modal-confirm" class="fixed inset-0 z-[80] items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm hidden">
+      <div class="surface-card relative w-full max-w-sm overflow-hidden rounded-2xl border shadow-theme-xl">
+        <header class="flex items-center justify-between border-b border-themed px-5 py-4">
+          <h3 class="text-base font-semibold text-heading">Confirmar ação</h3>
+          <button data-modal-close type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><span data-icon="x" data-icon-size="20"></span></button>
+        </header>
+        <div class="px-5 py-5"><p class="text-sm text-body">Deseja realmente prosseguir? Esta ação enviará uma notificação ao time.</p></div>
+        <footer class="flex items-center justify-end gap-2 border-t border-themed px-5 py-3">
+          <button data-modal-close class="h-9 rounded-lg border border-themed px-3 text-sm text-body hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+          <button data-modal-close class="btn btn-brand h-9 rounded-lg bg-brand-500 px-3 text-sm font-medium text-white hover:bg-brand-600">Confirmar</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="modal-delete" class="fixed inset-0 z-[80] items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm hidden">
+      <div class="surface-card relative w-full max-w-sm overflow-hidden rounded-2xl border shadow-theme-xl">
+        <header class="flex items-center justify-between border-b border-themed px-5 py-4">
+          <div>
+            <h3 class="text-base font-semibold text-heading">Excluir item</h3>
+            <p class="mt-0.5 text-xs text-muted">Esta ação não pode ser desfeita</p>
+          </div>
+          <button data-modal-close type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><span data-icon="x" data-icon-size="20"></span></button>
+        </header>
+        <div class="px-5 py-5"><p class="text-sm text-body">Você está prestes a remover este item permanentemente. Todos os dados associados serão perdidos.</p></div>
+        <footer class="flex items-center justify-end gap-2 border-t border-themed px-5 py-3">
+          <button data-modal-close class="h-9 rounded-lg border border-themed px-3 text-sm text-body hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+          <button data-modal-delete class="h-9 rounded-lg bg-error-500 px-3 text-sm font-medium text-white hover:bg-error-600">Excluir definitivamente</button>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    // Icon hydration (run AFTER layout.js so the DOM is in its final shape)
+    document.querySelectorAll('[data-icon]').forEach((el) => {
+      const name = el.getAttribute('data-icon');
+      const size = +(el.getAttribute('data-icon-size') || 20);
+      const stroke = +(el.getAttribute('data-icon-stroke') || 1.8);
+      el.innerHTML = icon(name, { size, strokeWidth: stroke });
+    });
+    document.querySelectorAll('[data-icon-prefix]').forEach((el) => {
+      const name = el.getAttribute('data-icon-prefix');
+      el.insertAdjacentHTML('afterbegin', icon(name, { size: 12, strokeWidth: 2.5 }) + ' ');
+    });
+
+    // Progress bars
+    const PROGRESS = [
+      { label: 'Vendas mensais', value: 72, color: 'var(--color-brand-500)' },
+      { label: 'Meta de novos clientes', value: 45, color: 'var(--color-success-500)' },
+      { label: 'Engajamento', value: 88, color: 'var(--color-warning-500)' },
+      { label: 'Devoluções', value: 12, color: 'var(--color-error-500)' },
+    ];
+    document.getElementById('progress-list').innerHTML = PROGRESS.map((p) => `
+      <div>
+        <div class="mb-1.5 flex items-center justify-between text-xs">
+          <span class="font-medium text-heading">${p.label}</span>
+          <span class="text-muted">${p.value}%</span>
+        </div>
+        <div class="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+          <div class="h-full rounded-full transition-all" style="width: ${p.value}%; background: ${p.color}"></div>
+        </div>
+      </div>`).join('');
+    document.getElementById('progress-circles').innerHTML = [25, 60, 88].map((c) => `
+      <div class="flex flex-col items-center">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="32" fill="none" stroke="var(--tx-border)" stroke-width="6"></circle>
+          <circle cx="40" cy="40" r="32" fill="none" stroke="var(--color-brand-500)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(c / 100) * 201} 201" transform="rotate(-90 40 40)"></circle>
+          <text x="40" y="45" text-anchor="middle" font-size="14" font-weight="700" fill="var(--tx-text-heading)">${c}%</text>
+        </svg>
+      </div>`).join('');
+
+    // Modal helpers
+    function showModal(id) {
+      const m = document.getElementById('modal-' + id);
+      if (!m) return;
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+    function hideAllModals() {
+      document.querySelectorAll('[id^="modal-"]').forEach((m) => {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      });
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('[data-modal-open]').forEach((el) =>
+      el.addEventListener('click', () => showModal(el.getAttribute('data-modal-open')))
+    );
+    // Delegate close/save/delete clicks + backdrop
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-modal-close]')) { hideAllModals(); return; }
+      if (e.target.closest('[data-modal-save]')) { hideAllModals(); notify('Perfil atualizado!', 'success'); return; }
+      if (e.target.closest('[data-modal-delete]')) { hideAllModals(); notify('Item excluído com sucesso.', 'error'); return; }
+      document.querySelectorAll('[id^="modal-"]:not(.hidden)').forEach((m) => {
+        if (e.target === m) hideAllModals();
+      });
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideAllModals(); });
+
+    // Dropdown
+    document.getElementById('dd-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('dd-menu').classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      const wrap = document.getElementById('dd-wrap');
+      if (wrap && !wrap.contains(e.target)) document.getElementById('dd-menu').classList.add('hidden');
+    });
+
+    // Toast triggers (uses global notify() from layout.js)
+    document.querySelectorAll('[data-toast]').forEach((el) =>
+      el.addEventListener('click', () => {
+        const type = el.getAttribute('data-toast');
+        const messages = { success: 'Tudo certo!', error: 'Algo deu errado.', warning: 'Verifique os dados.', info: 'Nova mensagem recebida.' };
+        notify(messages[type], type);
+      })
+    );
+  </script>
+</body>
+</html>

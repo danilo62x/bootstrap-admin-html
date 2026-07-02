@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Bootstrap Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/pwa.js"></script>
+</head>
+<body class="min-h-screen bg-white dark:bg-gray-dark">
+
+  <!-- ===== Sticky top nav ===== -->
+  <header id="landing-nav" class="sticky top-0 z-50 w-full border-b border-transparent transition-colors">
+    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <a href="#hero" data-scroll="hero" class="flex items-center gap-2.5 rounded-lg focus-ring">
+        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-lg font-bold text-white shadow-theme-md">A</span>
+        <span class="text-lg font-bold text-heading">Admin Template</span>
+      </a>
+
+      <nav class="hidden items-center gap-1 md:flex">
+        <a href="#features" data-scroll="features" class="rounded-lg px-3 py-2 text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Recursos</a>
+        <a href="#pricing" data-scroll="pricing" class="rounded-lg px-3 py-2 text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Preços</a>
+        <a href="#faq" data-scroll="faq" class="rounded-lg px-3 py-2 text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">FAQ</a>
+        <a href="#contact" data-scroll="contact" class="rounded-lg px-3 py-2 text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Contato</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button type="button" id="theme-toggle" aria-label="Alternar tema"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-themed text-body transition hover:bg-gray-50 dark:hover:bg-gray-800"></button>
+
+        <a href="login.html" class="hidden h-10 items-center rounded-lg px-4 text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800 sm:inline-flex">Entrar</a>
+        <a href="register.html" class="hidden h-10 items-center rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-600 focus-ring sm:inline-flex">Começar agora</a>
+
+        <button type="button" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-themed text-body transition hover:bg-gray-50 dark:hover:bg-gray-800 md:hidden"></button>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div id="mobile-menu" class="surface-card hidden border-t border-themed md:hidden">
+      <nav class="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
+        <a href="#features" data-scroll="features" class="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Recursos</a>
+        <a href="#pricing" data-scroll="pricing" class="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Preços</a>
+        <a href="#faq" data-scroll="faq" class="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">FAQ</a>
+        <a href="#contact" data-scroll="contact" class="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-body transition hover:bg-gray-100 hover:text-heading dark:hover:bg-gray-800">Contato</a>
+        <div class="mt-2 flex flex-col gap-2 border-t border-themed pt-3">
+          <a href="login.html" class="flex h-11 items-center justify-center rounded-lg border border-themed text-sm font-medium text-body transition hover:bg-gray-50 dark:hover:bg-gray-800">Entrar</a>
+          <a href="register.html" class="flex h-11 items-center justify-center rounded-lg bg-brand-500 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-600">Começar agora</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== Hero ===== -->
+    <section id="hero" class="relative scroll-mt-20 overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-100 dark:from-gray-900 dark:via-gray-dark dark:to-gray-900">
+      <div class="absolute inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-40 -right-32 h-96 w-96 rounded-full bg-brand-300/40 blur-3xl dark:bg-brand-500/10"></div>
+        <div class="absolute top-40 -left-40 h-96 w-96 rounded-full bg-warning-100/60 blur-3xl dark:bg-brand-700/10"></div>
+      </div>
+
+      <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 md:py-28 lg:grid-cols-2 lg:gap-8 lg:px-8">
+        <div class="text-center lg:text-left">
+          <span class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-400">
+            <span id="hero-badge-icon"></span>
+            HTML5 + Bootstrap 5.3
+          </span>
+
+          <h1 class="mt-5 text-title-sm font-bold leading-tight text-heading sm:text-title-md lg:text-title-lg">
+            O template admin que acelera seu próximo produto
+          </h1>
+          <p class="mx-auto mt-5 max-w-xl text-base text-muted lg:mx-0 md:text-lg">
+            Componentes prontos, dark mode, internacionalização e performance de primeira.
+            Lance sua aplicação em dias, não meses.
+          </p>
+
+          <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
+            <a href="register.html" class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 text-sm font-semibold text-white shadow-theme-md transition hover:bg-brand-600 focus-ring sm:w-auto">
+              <span id="hero-cta-icon"></span>
+              Começar grátis
+            </a>
+            <a href="dashboard.html" class="surface-card inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg border px-6 text-sm font-semibold text-body shadow-theme-xs transition hover:bg-gray-50 dark:hover:bg-gray-800 sm:w-auto">
+              Ver demo
+              <span id="hero-demo-icon"></span>
+            </a>
+          </div>
+
+          <div class="mt-8 flex flex-col items-center gap-3 text-sm text-muted sm:flex-row lg:justify-start">
+            <div id="hero-avatars" class="flex -space-x-2"></div>
+            <span><strong class="text-heading">+2.000 equipes</strong> já constroem com a gente</span>
+          </div>
+        </div>
+
+        <!-- product mockup -->
+        <div class="relative">
+          <div class="surface-card rounded-2xl border p-5 shadow-theme-xl">
+            <div class="flex items-center gap-1.5 border-b border-themed pb-4">
+              <span class="h-3 w-3 rounded-full bg-error-400"></span>
+              <span class="h-3 w-3 rounded-full bg-warning-400"></span>
+              <span class="h-3 w-3 rounded-full bg-success-400"></span>
+              <span class="ml-3 text-xs text-muted">app.template.com</span>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-3">
+              <div class="rounded-xl border border-themed bg-gray-50/60 p-3 dark:bg-gray-900/40">
+                <p class="text-xs text-muted">Receita</p>
+                <p class="mt-1 text-lg font-bold text-heading">R$ 84.2k</p>
+                <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-brand-600"><span class="trend-ico"></span>+12%</span>
+              </div>
+              <div class="rounded-xl border border-themed bg-gray-50/60 p-3 dark:bg-gray-900/40">
+                <p class="text-xs text-muted">Usuários</p>
+                <p class="mt-1 text-lg font-bold text-heading">12.480</p>
+                <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-success-600"><span class="trend-ico"></span>+12%</span>
+              </div>
+              <div class="rounded-xl border border-themed bg-gray-50/60 p-3 dark:bg-gray-900/40">
+                <p class="text-xs text-muted">Conversão</p>
+                <p class="mt-1 text-lg font-bold text-heading">4,8%</p>
+                <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-warning-600"><span class="trend-ico"></span>+12%</span>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-themed p-4">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-semibold text-heading">Visão geral</p>
+                <span class="rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-medium text-brand-700 dark:bg-brand-500/10 dark:text-brand-400">7 dias</span>
+              </div>
+              <div class="mt-4 flex h-32 items-end gap-2">
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:42%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:68%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:55%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:80%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:62%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:95%"></div>
+                <div class="flex-1 rounded-t-md bg-gradient-to-t from-brand-200 to-brand-500 dark:from-brand-500/40 dark:to-brand-500" style="height:74%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-4 -left-4 hidden rounded-xl border border-themed bg-white p-3 shadow-theme-lg dark:bg-gray-dark sm:block">
+            <div class="flex items-center gap-2">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-success-50 text-success-600 dark:bg-success-500/15">
+                <span id="hero-check-icon"></span>
+              </span>
+              <div>
+                <p class="text-xs font-semibold text-heading">Deploy pronto</p>
+                <p class="text-[11px] text-muted">build otimizado</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section id="features" class="scroll-mt-20 py-20 md:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Recursos</span>
+          <h2 class="mt-2 text-title-sm font-bold text-heading md:text-title-md">Tudo que você precisa para construir</h2>
+          <p class="mt-4 text-base text-muted md:text-lg">Uma base sólida e moderna para o seu próximo painel administrativo ou SaaS.</p>
+        </div>
+
+        <div id="features-grid" class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===== Pricing ===== -->
+    <section id="pricing" class="scroll-mt-20 bg-gray-50 py-20 dark:bg-gray-900/40 md:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Preços</span>
+          <h2 class="mt-2 text-title-sm font-bold text-heading md:text-title-md">Planos para cada estágio</h2>
+          <p class="mt-4 text-base text-muted md:text-lg">Sem taxas ocultas. Cancele quando quiser.</p>
+
+          <div class="surface-card mt-8 inline-flex items-center gap-3 rounded-full border p-1.5">
+            <button type="button" id="bill-monthly" class="btn btn-brand rounded-full px-4 py-1.5 text-sm font-medium transition bg-brand-500 text-white shadow-theme-xs">Mensal</button>
+            <button type="button" id="bill-annual" class="flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition text-body">
+              Anual
+              <span class="rounded-full bg-success-100 px-1.5 text-[10px] font-bold text-success-700 dark:bg-success-500/20 dark:text-success-400">-20%</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="pricing-grid" class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section id="faq" class="scroll-mt-20 py-20 md:py-28">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <span class="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">FAQ</span>
+          <h2 class="mt-2 text-title-sm font-bold text-heading md:text-title-md">Perguntas frequentes</h2>
+          <p class="mt-4 text-base text-muted md:text-lg">Tudo o que você precisa saber antes de começar.</p>
+        </div>
+
+        <ul id="faq-list" class="mt-12 space-y-3"></ul>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" class="scroll-mt-20 bg-gray-50 py-20 dark:bg-gray-900/40 md:py-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <span class="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Contato</span>
+          <h2 class="mt-2 text-title-sm font-bold text-heading md:text-title-md">Fale com a gente</h2>
+          <p class="mt-4 text-base text-muted md:text-lg">Tem dúvidas? Envie uma mensagem e nossa equipe responde rapidinho.</p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <div class="flex flex-col justify-center gap-6">
+            <div class="flex items-start gap-4">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400"><span class="ci" data-icon="mail"></span></span>
+              <div>
+                <p class="text-sm font-semibold text-heading">Email</p>
+                <p class="mt-0.5 text-sm text-muted">contato@template.com</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400"><span class="ci" data-icon="bell"></span></span>
+              <div>
+                <p class="text-sm font-semibold text-heading">Telefone</p>
+                <p class="mt-0.5 text-sm text-muted">+55 (11) 4002-8922</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400"><span class="ci" data-icon="globe"></span></span>
+              <div>
+                <p class="text-sm font-semibold text-heading">Endereço</p>
+                <p class="mt-0.5 text-sm text-muted">Av. Paulista, 1000 — São Paulo, SP</p>
+              </div>
+            </div>
+
+            <div class="surface-card mt-2 rounded-2xl border p-5">
+              <div class="flex items-center gap-2 text-success-600">
+                <span id="contact-check-icon"></span>
+                <p class="text-sm font-semibold text-heading">Resposta em até 24h</p>
+              </div>
+              <p class="mt-2 text-sm text-muted">Atendimento de segunda a sexta, das 9h às 18h (horário de Brasília).</p>
+            </div>
+          </div>
+
+          <form id="contact-form" class="surface-card rounded-2xl border p-6 shadow-theme-sm md:p-8">
+            <div class="space-y-5">
+              <div>
+                <label class="mb-2 block text-sm font-medium text-heading" for="contact-nome">Nome</label>
+                <input id="contact-nome" type="text" required placeholder="Seu nome" class="form-control h-11 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body placeholder-gray-400 outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-heading" for="contact-email">Email</label>
+                <input id="contact-email" type="email" required placeholder="seu@email.com" class="form-control h-11 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body placeholder-gray-400 outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-heading" for="contact-mensagem">Mensagem</label>
+                <textarea id="contact-mensagem" required rows="4" placeholder="Como podemos ajudar?" class="form-control w-full resize-none rounded-lg border border-themed bg-gray-50 px-3 py-2.5 text-sm text-body placeholder-gray-400 outline-none focus:border-brand-300 focus-ring dark:bg-gray-900"></textarea>
+              </div>
+              <p id="contact-success" class="hidden items-center gap-2 rounded-lg bg-success-50 px-4 py-2.5 text-sm font-medium text-success-600 dark:bg-success-500/15 dark:text-success-400">Mensagem enviada!</p>
+              <button type="submit" class="btn btn-brand flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-brand-500 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-600 focus-ring">
+                <span id="contact-submit-icon"></span>
+                Enviar mensagem
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="border-t border-themed bg-white dark:bg-gray-dark">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-5">
+        <div class="col-span-2">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-lg font-bold text-white shadow-theme-md">A</span>
+            <span class="text-lg font-bold text-heading">Admin Template</span>
+          </div>
+          <p class="mt-4 max-w-xs text-sm text-muted">O template admin moderno para acelerar o desenvolvimento do seu próximo produto.</p>
+          <div id="footer-social" class="mt-5 flex gap-2"></div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-heading">Produto</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="#features" data-scroll="features" class="text-sm text-muted transition hover:text-brand-600">Recursos</a></li>
+            <li><a href="#pricing" data-scroll="pricing" class="text-sm text-muted transition hover:text-brand-600">Preços</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Integrações</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-heading">Empresa</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Sobre</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Blog</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Carreiras</a></li>
+            <li><a href="#contact" data-scroll="contact" class="text-sm text-muted transition hover:text-brand-600">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-heading">Legal</h3>
+          <ul class="mt-4 space-y-3">
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Privacidade</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Termos</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Cookies</a></li>
+            <li><a href="#" class="text-sm text-muted transition hover:text-brand-600">Licença</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-themed pt-6 sm:flex-row">
+        <p class="text-sm text-muted">© 2026 Admin Template. Todos os direitos reservados.</p>
+        <p class="flex items-center gap-1.5 text-sm text-muted">
+          Feito com <span id="footer-zap" class="text-brand-500"></span> em HTML5 + Bootstrap 5.3
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var ic = (typeof window.icon === 'function') ? window.icon : function () { return ''; };
+
+      /* ---------- Dark mode ---------- */
+      function isDark() {
+        if (window.UIState) return !!UIState.get().darkMode;
+        try { return localStorage.getItem('landing-dark') === '1'; } catch (e) { return false; }
+      }
+      function renderThemeIcon() {
+        var btn = document.getElementById('theme-toggle');
+        if (btn) btn.innerHTML = ic(isDark() ? 'sun' : 'moon', { size: 18 });
+      }
+      function setDark(val) {
+        if (window.UIState) {
+          UIState.set({ darkMode: val });
+          UIState.applyTheme();
+        } else {
+          document.documentElement.classList.toggle('dark', val);
+          try { localStorage.setItem('landing-dark', val ? '1' : '0'); } catch (e) {}
+        }
+        renderThemeIcon();
+      }
+      // UIState.applyTheme() already runs on load; mirror class when no UIState present.
+      if (!window.UIState) {
+        document.documentElement.classList.toggle('dark', isDark());
+      }
+      renderThemeIcon();
+      document.getElementById('theme-toggle').addEventListener('click', function () {
+        setDark(!isDark());
+      });
+
+      /* ---------- Sticky nav background on scroll ---------- */
+      var nav = document.getElementById('landing-nav');
+      function onScroll() {
+        if (window.scrollY > 8) {
+          nav.className = 'sticky top-0 z-50 w-full transition-colors surface-header border-b border-themed shadow-theme-sm backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-gray-dark/80';
+        } else {
+          nav.className = 'sticky top-0 z-50 w-full transition-colors border-b border-transparent';
+        }
+      }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      /* ---------- Mobile menu ---------- */
+      var menuBtn = document.getElementById('menu-toggle');
+      var mobileMenu = document.getElementById('mobile-menu');
+      var menuOpen = false;
+      function renderMenuIcon() { menuBtn.innerHTML = ic(menuOpen ? 'x' : 'menu', { size: 20 }); }
+      function setMenu(open) {
+        menuOpen = open;
+        mobileMenu.classList.toggle('hidden', !open);
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        renderMenuIcon();
+      }
+      renderMenuIcon();
+      menuBtn.addEventListener('click', function () { setMenu(!menuOpen); });
+
+      /* ---------- Smooth scroll ---------- */
+      document.querySelectorAll('[data-scroll]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          setMenu(false);
+          var el = document.getElementById(link.getAttribute('data-scroll'));
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      /* ---------- Static icons & hero avatars ---------- */
+      document.getElementById('hero-badge-icon').innerHTML = ic('zap', { size: 14 });
+      document.getElementById('hero-cta-icon').innerHTML = ic('rocket', { size: 18 });
+      document.getElementById('hero-demo-icon').innerHTML = ic('chevron-right', { size: 18 });
+      document.getElementById('hero-check-icon').innerHTML = ic('check', { size: 18, strokeWidth: 2.5 });
+      document.getElementById('contact-check-icon').innerHTML = ic('check', { size: 18, strokeWidth: 2.5 });
+      document.getElementById('contact-submit-icon').innerHTML = ic('mail', { size: 18 });
+      document.getElementById('footer-zap').innerHTML = ic('zap', { size: 14 });
+      document.querySelectorAll('.trend-ico').forEach(function (s) { s.innerHTML = ic('trending-up', { size: 12 }); });
+      document.querySelectorAll('.ci').forEach(function (s) { s.innerHTML = ic(s.getAttribute('data-icon'), { size: 22 }); });
+
+      var avatarColors = ['#465fff', '#12b76a', '#f79009', '#0ba5ec'];
+      document.getElementById('hero-avatars').innerHTML = avatarColors.map(function (c) {
+        return '<span class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-white dark:border-gray-dark" style="background:' + c + '">' + ic('user', { size: 14 }) + '</span>';
+      }).join('');
+
+      /* ---------- Features ---------- */
+      var FEATURES = [
+        { icon: 'zap', color: '#465fff', title: 'Performance de ponta', desc: 'HTML estático puro + Bootstrap 5.3. Sem build pesado: carregamento instantâneo e zero runtime.' },
+        { icon: 'grid', color: '#0ba5ec', title: 'Componentes prontos', desc: 'Dezenas de componentes acessíveis e reutilizáveis para montar telas em minutos.' },
+        { icon: 'globe', color: '#12b76a', title: 'Internacionalização', desc: 'Estrutura preparada para múltiplos idiomas. Troque a língua com JavaScript leve, sem recarregar a página.' },
+        { icon: 'moon', color: '#7c3aed', title: 'Dark mode nativo', desc: 'Tema claro e escuro com tokens de design consistentes em toda a interface.' },
+        { icon: 'shield', color: '#f79009', title: 'Segurança em primeiro lugar', desc: 'Autenticação, rotas protegidas e boas práticas de segurança já configuradas.' },
+        { icon: 'package', color: '#f04438', title: 'PWA pronto', desc: 'Instalável, com suporte offline e cache inteligente para uma experiência de app.' }
+      ];
+      document.getElementById('features-grid').innerHTML = FEATURES.map(function (f) {
+        return '' +
+          '<div class="surface-card group rounded-2xl border p-6 shadow-theme-sm transition hover:-translate-y-1 hover:shadow-theme-lg">' +
+            '<div class="flex h-12 w-12 items-center justify-center rounded-xl transition group-hover:scale-110" style="background:' + f.color + '22;color:' + f.color + '">' +
+              ic(f.icon, { size: 24 }) +
+            '</div>' +
+            '<h3 class="mt-5 text-lg font-bold text-heading">' + f.title + '</h3>' +
+            '<p class="mt-2 text-sm leading-relaxed text-muted">' + f.desc + '</p>' +
+          '</div>';
+      }).join('');
+
+      /* ---------- Pricing ---------- */
+      var PLANS = [
+        { name: 'Starter', desc: 'Ideal para começar com o pé direito', icon: 'zap', color: '#0ba5ec', priceMonthly: 49, priceAnnual: 39, cta: 'Começar grátis', featured: false, features: ['Até 3 usuários', '5 GB de armazenamento', 'Suporte por email', 'Relatórios básicos'] },
+        { name: 'Pro', desc: 'Para times em crescimento', icon: 'rocket', color: '#465fff', priceMonthly: 129, priceAnnual: 103, cta: 'Assinar Pro', featured: true, features: ['Até 15 usuários', '100 GB de armazenamento', 'Suporte prioritário 24/5', 'Relatórios avançados', 'API access completo'] },
+        { name: 'Enterprise', desc: 'Para grandes organizações', icon: 'shield', color: '#7c3aed', priceMonthly: 399, priceAnnual: 319, cta: 'Falar com vendas', featured: false, features: ['Usuários ilimitados', 'Armazenamento ilimitado', 'Suporte dedicado 24/7', 'SSO e audit logs', 'SLA 99,99%'] }
+      ];
+      var annual = false;
+      function renderPricing() {
+        document.getElementById('pricing-grid').innerHTML = PLANS.map(function (p) {
+          var price = annual ? p.priceAnnual : p.priceMonthly;
+          var sub = annual ? ('Cobrado anualmente (R$ ' + (p.priceAnnual * 12) + '/ano)') : 'Pagamento mensal';
+          var cardCls = p.featured
+            ? 'border-brand-500 shadow-theme-lg ring-1 ring-brand-500/30 xl:-translate-y-2'
+            : 'border-themed shadow-theme-sm';
+          var ctaCls = p.featured
+            ? 'bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600'
+            : 'border border-themed text-body hover:bg-gray-50 dark:hover:bg-gray-800';
+          var badge = p.featured
+            ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Popular</div>'
+            : '';
+          var feats = p.features.map(function (feat) {
+            return '<li class="flex items-start gap-3 text-sm">' + ic('check', { size: 16, strokeWidth: 2.5, className: 'text-success-500' }) + '<span class="text-body">' + feat + '</span></li>';
+          }).join('');
+          return '' +
+            '<div class="surface-card relative flex flex-col rounded-2xl border p-6 transition ' + cardCls + '">' +
+              badge +
+              '<div class="flex h-12 w-12 items-center justify-center rounded-xl" style="background:' + p.color + '22;color:' + p.color + '">' + ic(p.icon, { size: 22 }) + '</div>' +
+              '<h3 class="mt-4 text-xl font-bold text-heading">' + p.name + '</h3>' +
+              '<p class="mt-1 text-sm text-muted">' + p.desc + '</p>' +
+              '<div class="mt-5 flex items-baseline gap-1"><span class="text-sm text-muted">R$</span><span class="text-4xl font-bold text-heading">' + price + '</span><span class="text-sm text-muted">/mês</span></div>' +
+              '<p class="mt-1 text-xs text-muted">' + sub + '</p>' +
+              '<a href="register.html" class="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg text-sm font-medium transition ' + ctaCls + '">' + p.cta + '</a>' +
+              '<ul class="mt-6 space-y-3 border-t border-themed pt-5">' + feats + '</ul>' +
+            '</div>';
+        }).join('');
+      }
+      renderPricing();
+
+      var btnMonthly = document.getElementById('bill-monthly');
+      var btnAnnual = document.getElementById('bill-annual');
+      var DISCOUNT_BADGE = '<span class="rounded-full bg-success-100 px-1.5 text-[10px] font-bold text-success-700 dark:bg-success-500/20 dark:text-success-400">-20%</span>';
+      function syncBilling() {
+        if (annual) {
+          btnAnnual.className = 'flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition bg-brand-500 text-white shadow-theme-xs';
+          btnMonthly.className = 'rounded-full px-4 py-1.5 text-sm font-medium transition text-body';
+        } else {
+          btnMonthly.className = 'rounded-full px-4 py-1.5 text-sm font-medium transition bg-brand-500 text-white shadow-theme-xs';
+          btnAnnual.className = 'flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition text-body';
+        }
+        btnAnnual.innerHTML = 'Anual ' + DISCOUNT_BADGE;
+      }
+      btnMonthly.addEventListener('click', function () { annual = false; syncBilling(); renderPricing(); });
+      btnAnnual.addEventListener('click', function () { annual = true; syncBilling(); renderPricing(); });
+
+      /* ---------- FAQ ---------- */
+      var FAQ = [
+        { q: 'O que está incluído no template?', a: 'Você recebe o código-fonte completo em HTML5 + Bootstrap 5.3, com dezenas de páginas e componentes prontos, dark mode, internacionalização, autenticação mockada e assets já otimizados — sem nenhuma etapa de build obrigatória.' },
+        { q: 'Preciso saber algum framework para usar?', a: 'Não. O template é HTML estático com JavaScript vanilla, então basta conhecimento básico de HTML, CSS e JS. O código é bem organizado, o que facilita a manutenção e a personalização.' },
+        { q: 'O template é responsivo e tem dark mode?', a: 'Sim. Todas as telas são mobile-first e totalmente responsivas, com suporte nativo a tema claro e escuro usando tokens de design consistentes.' },
+        { q: 'Recebo atualizações futuras?', a: 'Sim. Todas as licenças incluem atualizações gratuitas com novos componentes, correções e melhorias de performance enquanto o produto estiver ativo.' },
+        { q: 'Posso usar em projetos comerciais?', a: 'Com certeza. A licença permite uso em projetos comerciais e produtos para clientes. Consulte os termos completos para limites de revenda.' },
+        { q: 'Como funciona o suporte?', a: 'Oferecemos suporte por email para todos os planos e suporte prioritário para os planos Pro e Enterprise, com tempos de resposta reduzidos.' }
+      ];
+      var faqList = document.getElementById('faq-list');
+      var faqOpen = 0;
+      faqList.innerHTML = FAQ.map(function (item, i) {
+        return '' +
+          '<li class="surface-card overflow-hidden rounded-xl border">' +
+            '<button type="button" data-faq="' + i + '" class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left" aria-expanded="false">' +
+              '<span class="text-sm font-semibold text-heading md:text-base">' + item.q + '</span>' +
+              '<span class="faq-chev shrink-0 text-muted transition-transform duration-300">' + ic('chevron-down', { size: 20 }) + '</span>' +
+            '</button>' +
+            '<div class="faq-panel grid transition-all duration-300 ease-in-out grid-rows-[0fr] opacity-0">' +
+              '<div class="overflow-hidden"><p class="px-5 pb-4 text-sm leading-relaxed text-muted">' + item.a + '</p></div>' +
+            '</div>' +
+          '</li>';
+      }).join('');
+      function renderFaq() {
+        faqList.querySelectorAll('button[data-faq]').forEach(function (btn) {
+          var i = parseInt(btn.getAttribute('data-faq'), 10);
+          var isOpen = i === faqOpen;
+          var panel = btn.nextElementSibling;
+          var chev = btn.querySelector('.faq-chev');
+          btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          panel.className = 'faq-panel grid transition-all duration-300 ease-in-out ' + (isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0');
+          chev.className = 'faq-chev shrink-0 text-muted transition-transform duration-300' + (isOpen ? ' rotate-180' : '');
+        });
+      }
+      renderFaq();
+      faqList.querySelectorAll('button[data-faq]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var i = parseInt(btn.getAttribute('data-faq'), 10);
+          faqOpen = (faqOpen === i) ? -1 : i;
+          renderFaq();
+        });
+      });
+
+      /* ---------- Footer social ---------- */
+      var SOCIAL = ['globe', 'mail', 'users', 'star'];
+      document.getElementById('footer-social').innerHTML = SOCIAL.map(function (name) {
+        return '<a href="#" aria-label="' + name + '" class="flex h-10 w-10 items-center justify-center rounded-full border border-themed text-muted transition hover:bg-gray-50 hover:text-brand-600 dark:hover:bg-gray-800">' + ic(name, { size: 18 }) + '</a>';
+      }).join('');
+
+      /* ---------- Contact form ---------- */
+      var form = document.getElementById('contact-form');
+      var success = document.getElementById('contact-success');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        form.reset();
+        success.classList.remove('hidden');
+        success.classList.add('flex');
+        if (window.UIState && typeof UIState.notify === 'function') UIState.notify('Mensagem enviada!', 'success');
+        setTimeout(function () {
+          success.classList.add('hidden');
+          success.classList.remove('flex');
+        }, 4000);
+      });
+    })();
+  </script>
+</body>
+</html>

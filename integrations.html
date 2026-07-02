@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Integrações & Bibliotecas — Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+
+  <!-- CDN libraries (this is the only page allowed to use CDNs) -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <!-- Page heading -->
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-title-sm font-bold text-heading">Integrações &amp; Bibliotecas</h1>
+          <p class="mt-1 text-sm text-muted">
+            Demonstração das bibliotecas integradas ao template — gráficos, tabelas, formulários e mais.
+          </p>
+        </div>
+      </div>
+
+      <!-- a) ApexCharts ------------------------------------------------ -->
+      <section class="space-y-4">
+        <div class="flex flex-wrap items-center gap-3">
+          <h2 class="text-base font-semibold text-heading">Gráficos</h2>
+          <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+            <span class="lib-tag-icon"></span> ApexCharts
+          </span>
+          <p class="text-sm text-muted">Gráficos interativos e responsivos com tema claro/escuro automático.</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          <section class="surface-card rounded-2xl border shadow-theme-sm xl:col-span-2">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="chart"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Receita x Despesas</h3>
+                <p class="mt-0.5 text-xs text-muted">Área · 12 meses</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6"><div id="chart-area"></div></div>
+          </section>
+
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="package"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Vendas por produto</h3>
+                <p class="mt-0.5 text-xs text-muted">Barras</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6"><div id="chart-bar"></div></div>
+          </section>
+
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="globe"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Fontes de tráfego</h3>
+                <p class="mt-0.5 text-xs text-muted">Rosca</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6"><div id="chart-donut"></div></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- b) Data table ------------------------------------------------ -->
+      <section class="space-y-4">
+        <div class="flex flex-wrap items-center gap-3">
+          <h2 class="text-base font-semibold text-heading">Tabela de dados</h2>
+          <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+            <span class="lib-tag-icon"></span> Vanilla JS
+          </span>
+          <p class="text-sm text-muted">Ordenação, busca global e paginação no cliente.</p>
+        </div>
+
+        <section class="surface-card rounded-2xl border shadow-theme-sm">
+          <header class="flex flex-wrap items-center justify-between gap-3 border-b border-themed px-5 py-4 md:px-6">
+            <div>
+              <h3 class="text-base font-semibold text-heading">Usuários</h3>
+              <p class="mt-0.5 text-xs text-muted">Clique nos cabeçalhos para ordenar</p>
+            </div>
+            <input id="dt-search" placeholder="Buscar..."
+              class="form-control focus-ring h-9 w-48 rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+          </header>
+          <div class="overflow-x-auto p-5 md:p-6">
+            <table class="w-full text-left text-sm">
+              <thead class="border-b border-themed text-xs uppercase tracking-wide text-muted">
+                <tr id="dt-head"></tr>
+              </thead>
+              <tbody id="dt-rows" class="divide-y divide-themed"></tbody>
+            </table>
+          </div>
+          <footer class="flex flex-wrap items-center justify-between gap-3 border-t border-themed px-5 py-3 text-xs text-muted md:px-6">
+            <span><span id="dt-count">0</span> registro(s)</span>
+            <div class="flex items-center gap-2">
+              <button id="dt-prev" class="focus-ring rounded-md border border-themed px-2.5 py-1 text-body hover:bg-gray-100 disabled:opacity-40 dark:hover:bg-gray-800">Anterior</button>
+              <span id="dt-page" class="text-body"></span>
+              <button id="dt-next" class="focus-ring rounded-md border border-themed px-2.5 py-1 text-body hover:bg-gray-100 disabled:opacity-40 dark:hover:bg-gray-800">Próximo</button>
+            </div>
+          </footer>
+        </section>
+      </section>
+
+      <!-- c) Form validation  /  d) Rich text -------------------------- -->
+      <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <section class="space-y-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <h2 class="text-base font-semibold text-heading">Formulário validado</h2>
+            <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+              <span class="lib-tag-icon"></span> Validação nativa
+            </span>
+          </div>
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="forms"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Cadastro</h3>
+                <p class="mt-0.5 text-xs text-muted">Validação inline</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6">
+              <form id="contact-form" novalidate class="space-y-4">
+                <div>
+                  <label for="f-nome" class="mb-1.5 block text-sm font-medium text-body">Nome completo</label>
+                  <input id="f-nome" name="nome" type="text" placeholder="Seu nome"
+                    class="form-control focus-ring h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+                  <p class="mt-1 hidden text-xs text-error-500" data-err="nome"></p>
+                </div>
+                <div>
+                  <label for="f-email" class="mb-1.5 block text-sm font-medium text-body">E-mail</label>
+                  <input id="f-email" name="email" type="email" placeholder="voce@empresa.com"
+                    class="form-control focus-ring h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+                  <p class="mt-1 hidden text-xs text-error-500" data-err="email"></p>
+                </div>
+                <div>
+                  <label for="f-plano" class="mb-1.5 block text-sm font-medium text-body">Plano</label>
+                  <select id="f-plano" name="plano"
+                    class="form-select focus-ring h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900">
+                    <option value="">Selecione…</option>
+                    <option value="start">Start</option>
+                    <option value="pro">Pro</option>
+                    <option value="enterprise">Enterprise</option>
+                  </select>
+                  <p class="mt-1 hidden text-xs text-error-500" data-err="plano"></p>
+                </div>
+                <div>
+                  <label class="flex items-start gap-2 text-sm text-body">
+                    <input id="f-termos" name="termos" type="checkbox"
+                      class="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-500 focus:ring-brand-500" />
+                    <span>Aceito os termos de uso</span>
+                  </label>
+                  <p class="mt-1 hidden text-xs text-error-500" data-err="termos"></p>
+                </div>
+                <div id="form-success" class="hidden rounded-lg bg-success-50 px-3 py-2 text-sm font-medium text-success-700 dark:bg-success-500/15 dark:text-success-500"></div>
+                <button type="submit"
+                  class="btn btn-brand focus-ring inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">
+                  <span data-icon="check" data-icon-size="16"></span> Enviar
+                </button>
+              </form>
+            </div>
+          </section>
+        </section>
+
+        <!-- d) Rich text -->
+        <section class="space-y-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <h2 class="text-base font-semibold text-heading">Editor de texto rico</h2>
+            <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+              <span class="lib-tag-icon"></span> Quill
+            </span>
+          </div>
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="type"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Conteúdo</h3>
+                <p class="mt-0.5 text-xs text-muted">Negrito, listas, títulos e citações</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6">
+              <div id="editor" class="min-h-[200px]"></div>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <!-- e) Date picker  /  f) Upload --------------------------------- -->
+      <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <section class="space-y-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <h2 class="text-base font-semibold text-heading">Seletor de data</h2>
+            <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+              <span class="lib-tag-icon"></span> flatpickr
+            </span>
+          </div>
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="dashboard"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Datas</h3>
+                <p class="mt-0.5 text-xs text-muted">Apenas data e data + hora</p>
+              </div>
+            </header>
+            <div class="space-y-4 p-5 md:p-6">
+              <div>
+                <label for="dp-date" class="mb-1.5 block text-sm font-medium text-body">Data</label>
+                <input id="dp-date" type="text" placeholder="Selecione a data"
+                  class="form-control focus-ring h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+              </div>
+              <div>
+                <label for="dp-datetime" class="mb-1.5 block text-sm font-medium text-body">Data e hora</label>
+                <input id="dp-datetime" type="text" placeholder="Selecione data e hora"
+                  class="form-control focus-ring h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 dark:bg-gray-900" />
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- f) Upload -->
+        <section class="space-y-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <h2 class="text-base font-semibold text-heading">Upload de arquivos</h2>
+            <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">
+              <span class="lib-tag-icon"></span> Drag &amp; drop nativo
+            </span>
+          </div>
+          <section class="surface-card rounded-2xl border shadow-theme-sm">
+            <header class="flex items-center gap-3 border-b border-themed px-5 py-4 md:px-6">
+              <span class="text-brand-500" data-icon="download"></span>
+              <div>
+                <h3 class="text-base font-semibold text-heading">Enviar arquivos</h3>
+                <p class="mt-0.5 text-xs text-muted">Arraste e solte ou clique</p>
+              </div>
+            </header>
+            <div class="p-5 md:p-6">
+              <div id="dropzone"
+                class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-themed px-6 py-10 text-center transition hover:border-brand-300 hover:bg-brand-50/40 dark:hover:bg-brand-500/5">
+                <span class="text-muted" data-icon="download" data-icon-size="28"></span>
+                <p class="text-sm font-medium text-heading">Arraste arquivos aqui ou <span class="text-brand-500">clique para procurar</span></p>
+                <p class="text-xs text-muted">PNG, JPG ou PDF · até 5 MB cada</p>
+                <input id="file-input" type="file" multiple accept="image/png,image/jpeg,application/pdf" class="hidden" />
+              </div>
+              <ul id="file-list" class="mt-4 space-y-2"></ul>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    (function () {
+      /* --- Render icon placeholders (icons.js helper) ------------------ */
+      document.querySelectorAll('[data-icon]').forEach((el) => {
+        const size = parseInt(el.getAttribute('data-icon-size') || '20', 10);
+        el.innerHTML = icon(el.getAttribute('data-icon'), { size });
+      });
+      document.querySelectorAll('.lib-tag-icon').forEach((el) => {
+        el.innerHTML = icon('zap', { size: 12 });
+      });
+
+      /* --- Theme helpers ----------------------------------------------- */
+      const BRAND = '#465fff';
+      const isDark = () => document.documentElement.classList.contains('dark');
+      const mutedColor = () => (isDark() ? '#98a2b3' : '#667085');
+      const apexTheme = () => ({
+        theme: { mode: isDark() ? 'dark' : 'light' },
+        chart: { background: 'transparent', fontFamily: 'inherit', toolbar: { show: false } },
+        grid: { borderColor: isDark() ? '#1d2939' : '#eaecf0' },
+        tooltip: { theme: isDark() ? 'dark' : 'light' },
+        legend: { labels: { colors: mutedColor() } },
+      });
+
+      /* ================================================================ */
+      /* a) ApexCharts                                                    */
+      /* ================================================================ */
+      const charts = [];
+      if (typeof ApexCharts !== 'undefined') {
+        const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        const base = apexTheme();
+
+        const areaEl = document.getElementById('chart-area');
+        if (areaEl) {
+          const c = new ApexCharts(areaEl, {
+            ...base,
+            chart: { ...base.chart, type: 'area', height: 320 },
+            colors: [BRAND, '#12b76a'],
+            series: [
+              { name: 'Receita', data: [31, 40, 28, 51, 42, 62, 58, 70, 65, 82, 78, 95] },
+              { name: 'Despesas', data: [22, 28, 25, 33, 30, 38, 36, 44, 41, 50, 47, 55] },
+            ],
+            xaxis: { categories: MONTHS, labels: { style: { colors: mutedColor() } } },
+            yaxis: { labels: { style: { colors: mutedColor() } } },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 2 },
+            fill: { type: 'gradient', gradient: { opacityFrom: 0.4, opacityTo: 0 } },
+            legend: { ...base.legend, position: 'top' },
+          });
+          c.render();
+          charts.push(c);
+        }
+
+        const barEl = document.getElementById('chart-bar');
+        if (barEl) {
+          const c = new ApexCharts(barEl, {
+            ...base,
+            chart: { ...base.chart, type: 'bar', height: 300 },
+            colors: [BRAND],
+            series: [{ name: 'Vendas', data: [44, 55, 41, 67, 22, 43, 36, 52] }],
+            plotOptions: { bar: { borderRadius: 4, columnWidth: '55%' } },
+            dataLabels: { enabled: false },
+            xaxis: { categories: ['Pro', 'Start', 'Storage', 'Ent.', 'Treino', 'API', 'SMS', 'Extra'], labels: { style: { colors: mutedColor() } } },
+            yaxis: { labels: { style: { colors: mutedColor() } } },
+          });
+          c.render();
+          charts.push(c);
+        }
+
+        const donutEl = document.getElementById('chart-donut');
+        if (donutEl) {
+          const c = new ApexCharts(donutEl, {
+            ...base,
+            chart: { ...base.chart, type: 'donut', height: 300 },
+            colors: [BRAND, '#0ba5ec', '#12b76a', '#f79009', '#98a2b3'],
+            series: [42, 24, 18, 10, 6],
+            labels: ['Google', 'Direto', 'Social', 'Email', 'Outros'],
+            legend: { ...base.legend, position: 'bottom' },
+            plotOptions: { pie: { donut: { size: '65%' } } },
+            dataLabels: { enabled: false },
+          });
+          c.render();
+          charts.push(c);
+        }
+
+        // Re-theme charts when the app toggles dark mode
+        const obs = new MutationObserver(() => {
+          const t = apexTheme();
+          charts.forEach((c) =>
+            c.updateOptions(
+              {
+                theme: t.theme,
+                grid: t.grid,
+                tooltip: t.tooltip,
+                legend: { labels: { colors: mutedColor() } },
+                xaxis: { labels: { style: { colors: mutedColor() } } },
+                yaxis: { labels: { style: { colors: mutedColor() } } },
+              },
+              false,
+              false,
+            ),
+          );
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      }
+
+      /* ================================================================ */
+      /* b) Data table (search + sort + pagination)                       */
+      /* ================================================================ */
+      const USERS = [
+        { nome: 'Marina Costa', email: 'marina@empresa.com', funcao: 'Administradora', status: 'Ativo', valor: 1299.9 },
+        { nome: 'Lucas Pereira', email: 'lucas@empresa.com', funcao: 'Editor', status: 'Pendente', valor: 349.5 },
+        { nome: 'Aline Souza', email: 'aline@empresa.com', funcao: 'Visualizador', status: 'Ativo', valor: 89.0 },
+        { nome: 'Rafael Lima', email: 'rafael@empresa.com', funcao: 'Editor', status: 'Inativo', valor: 0 },
+        { nome: 'Bianca Rocha', email: 'bianca@empresa.com', funcao: 'Administradora', status: 'Ativo', valor: 2499.0 },
+        { nome: 'Diego Martins', email: 'diego@empresa.com', funcao: 'Visualizador', status: 'Pendente', valor: 159.9 },
+      ];
+      const COLS = [
+        { key: 'nome', label: 'Nome' },
+        { key: 'email', label: 'E-mail' },
+        { key: 'funcao', label: 'Função' },
+        { key: 'status', label: 'Status' },
+        { key: 'valor', label: 'Valor' },
+      ];
+      const PAGE_SIZE = 5;
+      const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+      function statusClass(s) {
+        if (s === 'Ativo') return 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-500';
+        if (s === 'Pendente') return 'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-500';
+        return 'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500';
+      }
+
+      let sortKey = 'nome';
+      let sortDir = 1;
+      let page = 1;
+      const headEl = document.getElementById('dt-head');
+      const rowsEl = document.getElementById('dt-rows');
+      const searchEl = document.getElementById('dt-search');
+
+      function renderHead() {
+        headEl.innerHTML = COLS.map((c) => {
+          const arrow = sortKey === c.key ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
+          return `<th data-sort="${c.key}" class="cursor-pointer select-none py-3 pr-4 font-medium hover:text-brand-500">${c.label}${arrow}</th>`;
+        }).join('');
+        headEl.querySelectorAll('[data-sort]').forEach((th) => {
+          th.addEventListener('click', () => {
+            const k = th.getAttribute('data-sort');
+            if (sortKey === k) sortDir *= -1;
+            else { sortKey = k; sortDir = 1; }
+            page = 1;
+            render();
+          });
+        });
+      }
+
+      function renderTable() {
+        const q = (searchEl.value || '').toLowerCase();
+        let data = USERS.filter((u) =>
+          !q || u.nome.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.funcao.toLowerCase().includes(q),
+        );
+        data = data.slice().sort((a, b) => {
+          let av = a[sortKey], bv = b[sortKey];
+          if (typeof av === 'string') { av = av.toLowerCase(); bv = bv.toLowerCase(); }
+          if (av < bv) return -1 * sortDir;
+          if (av > bv) return 1 * sortDir;
+          return 0;
+        });
+
+        const total = data.length;
+        const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        if (page > pages) page = pages;
+        const slice = data.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+        rowsEl.innerHTML = slice.length
+          ? slice.map((u) => `
+            <tr class="text-body">
+              <td class="py-3 pr-4 font-medium text-heading">${u.nome}</td>
+              <td class="py-3 pr-4 text-muted">${u.email}</td>
+              <td class="py-3 pr-4">${u.funcao}</td>
+              <td class="py-3 pr-4"><span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${statusClass(u.status)}">${u.status}</span></td>
+              <td class="py-3 pr-4 font-medium text-heading">${brl.format(u.valor)}</td>
+            </tr>`).join('')
+          : '<tr><td colspan="5" class="py-8 text-center text-sm text-muted">Nenhum registro encontrado.</td></tr>';
+
+        document.getElementById('dt-count').textContent = total;
+        document.getElementById('dt-page').textContent = `${page} / ${pages}`;
+        document.getElementById('dt-prev').disabled = page <= 1;
+        document.getElementById('dt-next').disabled = page >= pages;
+      }
+
+      function render() { renderHead(); renderTable(); }
+
+      searchEl.addEventListener('input', () => { page = 1; render(); });
+      document.getElementById('dt-prev').addEventListener('click', () => { if (page > 1) { page--; render(); } });
+      document.getElementById('dt-next').addEventListener('click', () => { page++; render(); });
+      render();
+
+      /* ================================================================ */
+      /* c) Form validation                                               */
+      /* ================================================================ */
+      const form = document.getElementById('contact-form');
+      function showErr(name, msg) {
+        const p = form.querySelector(`[data-err="${name}"]`);
+        if (!p) return;
+        if (msg) { p.textContent = msg; p.classList.remove('hidden'); }
+        else { p.textContent = ''; p.classList.add('hidden'); }
+      }
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nome = form.nome.value.trim();
+        const email = form.email.value.trim();
+        const plano = form.plano.value;
+        const termos = form.termos.checked;
+        let ok = true;
+
+        if (nome.length < 3) { showErr('nome', 'Mínimo de 3 caracteres'); ok = false; } else showErr('nome', '');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('email', 'E-mail inválido'); ok = false; } else showErr('email', '');
+        if (!plano) { showErr('plano', 'Selecione um plano'); ok = false; } else showErr('plano', '');
+        if (!termos) { showErr('termos', 'É preciso aceitar os termos'); ok = false; } else showErr('termos', '');
+
+        const success = document.getElementById('form-success');
+        if (ok) {
+          success.textContent = `Formulário enviado com sucesso para ${nome}!`;
+          success.classList.remove('hidden');
+          form.reset();
+        } else {
+          success.classList.add('hidden');
+        }
+      });
+
+      /* ================================================================ */
+      /* d) Rich text (Quill)                                             */
+      /* ================================================================ */
+      if (typeof Quill !== 'undefined') {
+        new Quill('#editor', {
+          theme: 'snow',
+          placeholder: 'Comece a escrever o seu conteúdo aqui…',
+          modules: {
+            toolbar: [
+              [{ header: [1, 2, 3, false] }],
+              ['bold', 'italic', 'underline'],
+              [{ list: 'ordered' }, { list: 'bullet' }],
+              ['blockquote', 'link'],
+              ['clean'],
+            ],
+          },
+        });
+      }
+
+      /* ================================================================ */
+      /* e) Date picker (flatpickr)                                       */
+      /* ================================================================ */
+      if (typeof flatpickr !== 'undefined') {
+        flatpickr('#dp-date', { dateFormat: 'd/m/Y', defaultDate: new Date() });
+        flatpickr('#dp-datetime', { enableTime: true, dateFormat: 'd/m/Y H:i', time_24hr: true, defaultDate: new Date() });
+      }
+
+      /* ================================================================ */
+      /* f) Upload (native drag & drop)                                   */
+      /* ================================================================ */
+      const dropzone = document.getElementById('dropzone');
+      const fileInput = document.getElementById('file-input');
+      const fileList = document.getElementById('file-list');
+      let files = [];
+
+      function fmtSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+      function renderFiles() {
+        fileList.innerHTML = files.map((f, i) => `
+          <li class="flex items-center justify-between gap-3 rounded-lg border border-themed px-3 py-2 text-sm">
+            <span class="flex min-w-0 items-center gap-2">
+              <span class="text-brand-500">${icon('package', { size: 16 })}</span>
+              <span class="truncate text-body">${f.name}</span>
+            </span>
+            <span class="flex shrink-0 items-center gap-3">
+              <span class="text-xs text-muted">${fmtSize(f.size)}</span>
+              <button type="button" data-rm="${i}" class="rounded p-1 text-muted hover:bg-error-50 hover:text-error-600 dark:hover:bg-error-500/15">${icon('x', { size: 14 })}</button>
+            </span>
+          </li>`).join('');
+        fileList.querySelectorAll('[data-rm]').forEach((b) => {
+          b.addEventListener('click', () => {
+            files.splice(parseInt(b.getAttribute('data-rm'), 10), 1);
+            renderFiles();
+          });
+        });
+      }
+      function addFiles(list) {
+        Array.from(list).forEach((f) => files.push(f));
+        renderFiles();
+      }
+
+      dropzone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
+      ['dragenter', 'dragover'].forEach((ev) =>
+        dropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropzone.classList.add('border-brand-300', 'bg-brand-50/40');
+        }),
+      );
+      ['dragleave', 'drop'].forEach((ev) =>
+        dropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dropzone.classList.remove('border-brand-300', 'bg-brand-50/40');
+        }),
+      );
+      dropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+      });
+    })();
+  </script>
+</body>
+</html>

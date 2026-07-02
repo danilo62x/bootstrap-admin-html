@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Arquivos — Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <!-- Toolbar -->
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center gap-1.5 text-sm">
+          <button class="font-medium text-body hover:text-brand-500">Início</button>
+          <span id="crumb-icon" class="text-muted"></span>
+          <span class="font-semibold text-heading">Meus arquivos</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="inline-flex rounded-lg border border-themed p-0.5">
+            <button id="view-grid" class="flex h-8 w-8 items-center justify-center rounded-md" aria-label="Visualização em grade"></button>
+            <button id="view-list" class="flex h-8 w-8 items-center justify-center rounded-md" aria-label="Visualização em lista"></button>
+          </div>
+          <button id="upload-open" class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"></button>
+        </div>
+      </div>
+
+      <!-- Storage usage -->
+      <div class="surface-card rounded-2xl border p-5 shadow-theme-sm md:p-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand-500 dark:bg-brand-500/15" id="storage-icon"></span>
+            <div>
+              <p class="text-sm font-semibold text-heading">Armazenamento</p>
+              <p class="text-xs text-muted" id="storage-text"></p>
+            </div>
+          </div>
+          <span class="text-sm font-semibold text-heading" id="storage-pct"></span>
+        </div>
+        <div class="mt-4 h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+          <div id="storage-bar" class="h-full rounded-full bg-brand-500 transition-all"></div>
+        </div>
+      </div>
+
+      <!-- Folders -->
+      <div>
+        <h2 class="mb-3 text-sm font-semibold text-heading">Pastas</h2>
+        <div id="folders-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+      </div>
+
+      <!-- Files -->
+      <div>
+        <h2 class="mb-3 text-sm font-semibold text-heading">Arquivos</h2>
+        <div id="files-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload modal -->
+  <div id="modal-upload" class="fixed inset-0 z-[80] items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm hidden">
+    <div class="surface-card relative w-full max-w-2xl overflow-hidden rounded-2xl border shadow-theme-xl">
+      <header class="flex items-center justify-between border-b border-themed px-5 py-4">
+        <div>
+          <h3 class="text-base font-semibold text-heading">Enviar arquivos</h3>
+          <p class="mt-0.5 text-xs text-muted">Arraste e solte ou selecione do seu dispositivo</p>
+        </div>
+        <button data-modal-close type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><span id="upload-close-icon"></span></button>
+      </header>
+      <div class="px-5 py-5">
+        <div id="dropzone" class="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-themed bg-gray-50 px-6 py-12 text-center transition hover:border-brand-300 dark:bg-gray-900/40">
+          <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-500 dark:bg-brand-500/15" id="dropzone-icon"></span>
+          <div>
+            <p class="text-sm font-medium text-heading">Arraste arquivos aqui</p>
+            <p class="mt-0.5 text-xs text-muted">ou clique para selecionar (até 8 arquivos)</p>
+          </div>
+          <button type="button" class="mt-1 inline-flex h-9 items-center gap-2 rounded-lg border border-themed px-3 text-sm font-medium text-body hover:bg-white dark:hover:bg-gray-800">Selecionar arquivos</button>
+          <input type="file" multiple class="hidden" />
+        </div>
+      </div>
+      <footer class="flex items-center justify-end gap-2 border-t border-themed px-5 py-3">
+        <button data-modal-close class="h-10 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+        <button id="upload-done" class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white hover:bg-brand-600"></button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    const FOLDERS = [
+      { id: 'f1', name: 'Documentos', items: 24, modified: '24/05/2026' },
+      { id: 'f2', name: 'Imagens', items: 132, modified: '22/05/2026' },
+      { id: 'f3', name: 'Projetos', items: 9, modified: '20/05/2026' },
+      { id: 'f4', name: 'Backups', items: 5, modified: '12/05/2026' },
+    ];
+
+    const FILES = [
+      { id: 'a1', name: 'Proposta-comercial.pdf', kind: 'document', size: '2,4 MB', modified: 'Hoje, 09:42' },
+      { id: 'a2', name: 'Relatorio-maio.xlsx', kind: 'sheet', size: '845 KB', modified: 'Ontem, 18:11' },
+      { id: 'a3', name: 'Banner-home.png', kind: 'image', size: '1,1 MB', modified: 'Ontem, 14:25' },
+      { id: 'a4', name: 'Apresentacao.pdf', kind: 'document', size: '5,8 MB', modified: '23/05/2026' },
+      { id: 'a5', name: 'Logo-vetor.svg', kind: 'image', size: '64 KB', modified: '22/05/2026' },
+      { id: 'a6', name: 'Codigo-fonte.zip', kind: 'archive', size: '18,2 MB', modified: '20/05/2026' },
+    ];
+
+    const KIND_STYLE = {
+      document: { icon: 'forms', cls: 'bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400' },
+      image: { icon: 'eye', cls: 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' },
+      archive: { icon: 'package', cls: 'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-warning-500' },
+      sheet: { icon: 'tables', cls: 'bg-blue-light-50 text-blue-light-600 dark:bg-blue-light-500/15 dark:text-blue-light-500' },
+    };
+
+    const MENU_ACTIONS = [
+      { label: 'Abrir', icon: 'eye' },
+      { label: 'Renomear', icon: 'edit' },
+      { label: 'Baixar', icon: 'download' },
+      { label: 'Excluir', icon: 'trash', danger: true },
+    ];
+
+    let view = 'grid';
+    let openMenu = null;
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+    // Static chrome icons
+    document.getElementById('crumb-icon').innerHTML = icon('chevron-right', { size: 14 });
+    document.getElementById('storage-icon').innerHTML = icon('package', { size: 20 });
+    document.getElementById('dropzone-icon').innerHTML = icon('download', { size: 24 });
+    document.getElementById('upload-close-icon').innerHTML = icon('x', { size: 20 });
+    document.getElementById('upload-open').innerHTML = icon('plus', { size: 16 }) + ' Enviar arquivo';
+    document.getElementById('upload-done').innerHTML = icon('download', { size: 16 }) + ' Concluir';
+
+    // Storage bar
+    const usedGb = 64.5, totalGb = 100;
+    const usedPct = Math.round((usedGb / totalGb) * 100);
+    document.getElementById('storage-text').textContent = `${usedGb} GB de ${totalGb} GB utilizados`;
+    document.getElementById('storage-pct').textContent = `${usedPct}%`;
+    const $bar = document.getElementById('storage-bar');
+    $bar.style.width = `${usedPct}%`;
+    $bar.className = `h-full rounded-full ${usedPct > 80 ? 'bg-error-500' : 'bg-brand-500'} transition-all`;
+
+    function menuMarkup(id) {
+      if (openMenu !== id) return '';
+      return `
+        <div class="fixed inset-0 z-10" data-menu-backdrop></div>
+        <div class="surface-card absolute right-0 top-full z-20 mt-1 w-40 overflow-hidden rounded-lg border py-1 shadow-theme-lg">
+          ${MENU_ACTIONS.map((a) => `
+            <button data-action="${a.label}" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-800 ${a.danger ? 'text-error-600 dark:text-error-500' : 'text-body'}">
+              ${icon(a.icon, { size: 15 })} ${a.label}
+            </button>`).join('')}
+        </div>`;
+    }
+
+    function dotsButton(id) {
+      return `
+        <div class="relative">
+          <button data-menu="${id}" class="rounded-md p-1.5 text-muted hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Opções">${icon('dots-vertical', { size: 16 })}</button>
+          ${menuMarkup(id)}
+        </div>`;
+    }
+
+    function renderToolbar() {
+      const g = document.getElementById('view-grid');
+      const l = document.getElementById('view-list');
+      g.className = `flex h-8 w-8 items-center justify-center rounded-md ${view === 'grid' ? 'bg-brand-500 text-white' : 'text-muted hover:bg-gray-50 dark:hover:bg-gray-800'}`;
+      l.className = `flex h-8 w-8 items-center justify-center rounded-md ${view === 'list' ? 'bg-brand-500 text-white' : 'text-muted hover:bg-gray-50 dark:hover:bg-gray-800'}`;
+      g.innerHTML = icon('grid', { size: 16 });
+      l.innerHTML = icon('tables', { size: 16 });
+    }
+
+    function renderFolders() {
+      document.getElementById('folders-grid').innerHTML = FOLDERS.map((f) => `
+        <div class="surface-card group relative flex items-center gap-3 rounded-2xl border p-4 shadow-theme-sm transition hover:border-brand-300">
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-warning-500">${icon('grid', { size: 22 })}</span>
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-medium text-heading">${esc(f.name)}</p>
+            <p class="text-xs text-muted">${f.items} itens · ${esc(f.modified)}</p>
+          </div>
+          ${dotsButton(f.id)}
+        </div>`).join('');
+    }
+
+    function renderFiles() {
+      const c = document.getElementById('files-container');
+      if (view === 'grid') {
+        c.innerHTML = `<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">${FILES.map((file) => {
+          const s = KIND_STYLE[file.kind];
+          return `
+            <div class="surface-card relative flex flex-col gap-3 rounded-2xl border p-4 shadow-theme-sm transition hover:border-brand-300">
+              <div class="flex items-start justify-between">
+                <span class="flex h-11 w-11 items-center justify-center rounded-xl ${s.cls}">${icon(s.icon, { size: 22 })}</span>
+                ${dotsButton(file.id)}
+              </div>
+              <div class="min-w-0">
+                <p class="truncate text-sm font-medium text-heading">${esc(file.name)}</p>
+                <p class="mt-0.5 text-xs text-muted">${esc(file.size)} · ${esc(file.modified)}</p>
+              </div>
+            </div>`;
+        }).join('')}</div>`;
+      } else {
+        c.innerHTML = `
+          <div class="surface-card overflow-hidden rounded-2xl border shadow-theme-sm">
+            <table class="w-full text-left text-sm">
+              <thead class="border-b border-themed text-xs uppercase tracking-wide text-muted">
+                <tr>
+                  <th class="px-5 py-3 font-medium">Nome</th>
+                  <th class="px-5 py-3 font-medium">Tamanho</th>
+                  <th class="px-5 py-3 font-medium">Modificado</th>
+                  <th class="px-5 py-3 text-right font-medium">Ações</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-themed">
+                ${FILES.map((file) => {
+                  const s = KIND_STYLE[file.kind];
+                  return `
+                    <tr class="text-body">
+                      <td class="px-5 py-3">
+                        <div class="flex items-center gap-3">
+                          <span class="flex h-9 w-9 items-center justify-center rounded-lg ${s.cls}">${icon(s.icon, { size: 18 })}</span>
+                          <span class="font-medium text-heading">${esc(file.name)}</span>
+                        </div>
+                      </td>
+                      <td class="px-5 py-3 text-muted">${esc(file.size)}</td>
+                      <td class="px-5 py-3 text-muted">${esc(file.modified)}</td>
+                      <td class="px-5 py-3"><div class="relative flex justify-end">${dotsButton(file.id)}</div></td>
+                    </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>`;
+      }
+    }
+
+    function renderItems() {
+      renderFolders();
+      renderFiles();
+    }
+
+    // View toggle
+    document.getElementById('view-grid').addEventListener('click', () => { view = 'grid'; renderToolbar(); renderItems(); });
+    document.getElementById('view-list').addEventListener('click', () => { view = 'list'; renderToolbar(); renderItems(); });
+
+    // Menu open/close + actions (delegated on document)
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-menu]');
+      if (trigger) {
+        const id = trigger.getAttribute('data-menu');
+        openMenu = openMenu === id ? null : id;
+        renderItems();
+        return;
+      }
+      const action = e.target.closest('[data-action]');
+      if (action) {
+        const label = action.getAttribute('data-action');
+        openMenu = null;
+        renderItems();
+        notify(`${label} executado`, 'success');
+        return;
+      }
+      if (e.target.closest('[data-menu-backdrop]')) {
+        openMenu = null;
+        renderItems();
+        return;
+      }
+    });
+
+    // Upload modal
+    const $modal = document.getElementById('modal-upload');
+    function openUpload() { $modal.classList.remove('hidden'); $modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+    function closeUpload() { $modal.classList.add('hidden'); $modal.classList.remove('flex'); document.body.style.overflow = ''; }
+    document.getElementById('upload-open').addEventListener('click', openUpload);
+    document.getElementById('dropzone').addEventListener('click', () => $modal.querySelector('input[type="file"]').click());
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-modal-close]')) { closeUpload(); return; }
+      if (e.target === $modal) closeUpload();
+    });
+    document.getElementById('upload-done').addEventListener('click', () => { closeUpload(); notify('Arquivos enviados com sucesso', 'success'); });
+
+    renderToolbar();
+    renderItems();
+  </script>
+</body>
+</html>

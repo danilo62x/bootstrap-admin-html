@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Em manutenção — Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/pwa.js"></script>
+</head>
+<body>
+  <div class="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-white to-brand-100 px-4 dark:from-gray-900 dark:via-gray-dark dark:to-gray-900">
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-brand-200/40 blur-3xl dark:bg-brand-500/10"></div>
+      <div class="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-warning-100/60 blur-3xl dark:bg-brand-700/10"></div>
+    </div>
+
+    <div class="w-full max-w-lg text-center">
+      <span id="ic-settings" class="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-theme-md"></span>
+
+      <h1 class="mt-8 text-title-md font-bold text-heading">Estamos em manutenção</h1>
+
+      <p class="mx-auto mt-3 max-w-md text-sm text-muted">
+        Nosso sistema está passando por uma atualização programada para melhorar sua experiência.
+        Voltaremos em instantes. Agradecemos a sua paciência.
+      </p>
+
+      <div class="mt-6 inline-flex items-center gap-2 rounded-full border border-themed bg-white/70 px-4 py-2 text-sm font-medium text-body shadow-theme-xs dark:bg-gray-900/60">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-warning-500"></span>
+        Tempo estimado: aproximadamente 2 horas
+      </div>
+
+      <div class="mt-8">
+        <a href="dashboard.html" class="inline-flex h-11 items-center gap-2 rounded-lg bg-brand-500 px-6 text-sm font-medium text-white shadow-theme-xs transition hover:bg-brand-600 focus-ring">
+          <span id="ic-back"></span>
+          Voltar ao início
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('ic-settings').innerHTML = icon('settings', { size: 40 });
+    document.getElementById('ic-back').innerHTML = icon('arrow-up', { size: 18, className: '-rotate-90' });
+  </script>
+</body>
+</html>

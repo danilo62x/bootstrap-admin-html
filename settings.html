@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Configurações — Admin Template</title>
+  
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div>
+        <h1 class="text-title-sm font-bold text-heading">Configurações</h1>
+        <p class="mt-1 text-sm text-muted">Personalize a aparência, layout e preferências da conta.</p>
+      </div>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Aparência</h3></header>
+        <div class="space-y-5 p-5 md:p-6">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-heading">Tema</label>
+            <div class="flex gap-2">
+              <button data-theme-light class="inline-flex h-10 items-center gap-2 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">Claro</button>
+              <button data-theme-dark class="inline-flex h-10 items-center gap-2 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">Escuro</button>
+            </div>
+          </div>
+          <div class="border-t border-themed pt-5">
+            <label class="mb-2 block text-sm font-medium text-heading">Tamanho da fonte</label>
+            <div class="flex flex-wrap gap-2" id="font-sizes"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Paletas de cores</h3></header>
+        <div id="palettes" class="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 md:p-6"></div>
+      </section>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6">
+          <h3 class="text-base font-semibold text-heading">Personalização avançada</h3>
+          <p class="mt-0.5 text-xs text-muted">Ajuste cada cor individualmente</p>
+        </header>
+        <div id="theme-groups" class="space-y-5 p-5 md:p-6"></div>
+        <div class="flex items-center gap-3 border-t border-themed px-5 py-4 md:px-6">
+          <button id="reset-theme" type="button" class="inline-flex h-9 items-center gap-1.5 rounded-lg border border-themed px-3 text-xs font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">
+            <span id="reset-icon"></span> Restaurar padrões
+          </button>
+          <span class="text-xs text-muted">Remove todas as customizações e restaura as cores originais</span>
+        </div>
+      </section>
+
+      <section class="surface-card rounded-2xl border shadow-theme-sm">
+        <header class="border-b border-themed px-5 py-4 md:px-6"><h3 class="text-base font-semibold text-heading">Layout</h3></header>
+        <div class="space-y-5 p-5 md:p-6">
+          <div>
+            <div class="mb-2 flex items-center justify-between">
+              <label class="text-sm font-medium text-heading">Largura do menu</label>
+              <span id="width-label" class="rounded-md bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">290px</span>
+            </div>
+            <input id="width-range" type="range" min="200" max="360" step="5" value="290" class="w-full" />
+            <div class="mt-1 flex justify-between text-xs text-muted"><span>200px</span><span>360px</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    const FONT_SIZES = [['sm', 'Pequena'], ['base', 'Normal'], ['lg', 'Grande'], ['xl', 'Extra']];
+
+    function renderFontSizes() {
+      const cur = UIState.get().fontSize;
+      document.getElementById('font-sizes').innerHTML = FONT_SIZES.map(([v, l]) =>
+        `<button data-font="${v}" class="inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-sm font-medium transition ${cur === v ? 'border-brand-500 bg-brand-50 text-brand-600 dark:bg-brand-500/15' : 'border-themed text-body hover:bg-gray-50 dark:hover:bg-gray-800'}">${l}</button>`
+      ).join('');
+      document.querySelectorAll('[data-font]').forEach((el) =>
+        el.addEventListener('click', () => {
+          UIState.set({ fontSize: el.getAttribute('data-font') });
+          UIState.applyFontSize();
+          renderFontSizes();
+        })
+      );
+    }
+
+    document.querySelector('[data-theme-light]').addEventListener('click', () => {
+      UIState.set({ darkMode: false });
+      UIState.applyTheme();
+    });
+    document.querySelector('[data-theme-dark]').addEventListener('click', () => {
+      UIState.set({ darkMode: true });
+      UIState.applyTheme();
+    });
+
+    // Every palette MUST define ALL sidebar tokens so switching palettes resets prior selection.
+    const PALETTES = [
+      { name: 'Indigo', vars: { '--color-brand-500': '#465fff', '--color-brand-600': '#3641f5', '--tx-sidebar-bg': '#ffffff', '--tx-sidebar-active-bg': '#ecf3ff', '--tx-sidebar-text': '#475467', '--tx-sidebar-text-active': '#465fff' } },
+      { name: 'Esmeralda', vars: { '--color-brand-500': '#10b981', '--color-brand-600': '#059669', '--tx-sidebar-bg': '#0f3a2e', '--tx-sidebar-active-bg': 'rgba(16,185,129,0.18)', '--tx-sidebar-text': '#a7f3d0', '--tx-sidebar-text-active': '#ffffff' } },
+      { name: 'Violeta', vars: { '--color-brand-500': '#8b5cf6', '--color-brand-600': '#7c3aed', '--tx-sidebar-bg': '#1e1b4b', '--tx-sidebar-active-bg': 'rgba(139,92,246,0.2)', '--tx-sidebar-text': '#c4b5fd', '--tx-sidebar-text-active': '#ffffff' } },
+      { name: 'Tangerina', vars: { '--color-brand-500': '#f97316', '--color-brand-600': '#ea580c', '--tx-sidebar-bg': '#1c1917', '--tx-sidebar-active-bg': 'rgba(249,115,22,0.18)', '--tx-sidebar-text': '#fdba74', '--tx-sidebar-text-active': '#ffffff' } },
+      { name: 'Rosa', vars: { '--color-brand-500': '#ec4899', '--color-brand-600': '#db2777', '--tx-sidebar-bg': '#2d1b35', '--tx-sidebar-active-bg': 'rgba(236,72,153,0.2)', '--tx-sidebar-text': '#f9a8d4', '--tx-sidebar-text-active': '#ffffff' } },
+      { name: 'Ciano', vars: { '--color-brand-500': '#06b6d4', '--color-brand-600': '#0891b2', '--tx-sidebar-bg': '#083344', '--tx-sidebar-active-bg': 'rgba(6,182,212,0.2)', '--tx-sidebar-text': '#a5f3fc', '--tx-sidebar-text-active': '#ffffff' } },
+    ];
+    let activePaletteIdx = -1;
+    const checkIconHtml = icon('check', { size: 20, strokeWidth: 2.5 });
+
+    function renderPalettes() {
+      document.getElementById('palettes').innerHTML = PALETTES.map((p, i) => {
+        const active = i === activePaletteIdx;
+        return `
+          <button data-palette="${i}" class="group overflow-hidden rounded-xl border-2 text-left transition ${active ? 'border-brand-500 shadow-theme-md' : 'border-themed hover:border-brand-300 hover:shadow-theme-sm'}">
+            <div class="flex h-16">
+              <div class="flex flex-1 items-center justify-center text-white" style="background: ${p.vars['--color-brand-500']}">
+                ${active ? checkIconHtml : ''}
+              </div>
+              <div class="flex w-6 flex-col justify-center gap-1 px-1.5" style="background: ${p.vars['--tx-sidebar-bg'] || '#1a2231'}">
+                <span class="block h-[3px] rounded-sm bg-white/30"></span><span class="block h-[3px] rounded-sm bg-white/30"></span><span class="block h-[3px] rounded-sm bg-white/30"></span>
+              </div>
+            </div>
+            <div class="px-2 py-1.5 text-center text-xs font-medium text-heading" style="background: var(--tx-card-bg)">${p.name}</div>
+          </button>`;
+      }).join('');
+    }
+    renderPalettes();
+
+    // Click handler — delegated so it survives re-renders
+    document.getElementById('palettes').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-palette]');
+      if (!btn) return;
+      const idx = +btn.getAttribute('data-palette');
+      activePaletteIdx = idx;
+      Object.entries(PALETTES[idx].vars).forEach(([k, v]) => UIState.setThemeVar(k, v));
+      renderPalettes();
+      notify(`Paleta "${PALETTES[idx].name}" aplicada`, 'success');
+    });
+
+    const THEME_GROUPS = [
+      { title: 'Cores principais', vars: [['--color-brand-500', 'Primária'], ['--color-success-500', 'Sucesso'], ['--color-warning-500', 'Aviso'], ['--color-error-500', 'Perigo'], ['--color-blue-light-500', 'Info']] },
+      { title: 'Menu lateral', vars: [['--tx-sidebar-bg', 'Fundo'], ['--tx-sidebar-text', 'Texto'], ['--tx-sidebar-active-bg', 'Fundo ativo']] },
+      { title: 'Layout', vars: [['--tx-body-bg', 'Fundo da página'], ['--tx-card-bg', 'Cards'], ['--tx-header-bg', 'Header'], ['--tx-border', 'Bordas']] },
+      { title: 'Tipografia', vars: [['--tx-text-heading', 'Títulos'], ['--tx-text', 'Texto principal'], ['--tx-text-muted', 'Texto secundário']] },
+    ];
+    document.getElementById('theme-groups').innerHTML = THEME_GROUPS.map((g) => `
+      <div>
+        <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">${g.title}</p>
+        <div class="space-y-2">
+          ${g.vars.map(([key, label]) => `
+            <div class="flex items-center gap-3 rounded-lg border border-themed px-3 py-2">
+              <span class="flex-1 text-sm text-heading">${label}</span>
+              <span class="h-5 w-5 shrink-0 rounded-md border border-themed" style="background: ${UIState.getThemeVar(key)}"></span>
+              <input type="color" data-color="${key}" value="${UIState.getThemeVar(key)}" class="h-8 w-10 cursor-pointer" />
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+    document.querySelectorAll('[data-color]').forEach((el) =>
+      el.addEventListener('input', () => {
+        activePaletteIdx = -1; // manual tweak unselects palette
+        UIState.setThemeVar(el.getAttribute('data-color'), el.value);
+        renderPalettes();
+      })
+    );
+
+    const resetIcon = document.getElementById('reset-icon');
+    if (resetIcon) resetIcon.innerHTML = icon('reset', { size: 14 });
+
+    document.getElementById('reset-theme').addEventListener('click', () => {
+      UIState.resetThemeVars();
+      location.reload();
+    });
+
+    document.getElementById('width-range').addEventListener('input', (e) => {
+      const w = +e.target.value;
+      UIState.set({ sidebarWidth: w });
+      document.getElementById('width-label').textContent = w + 'px';
+      const aside = document.getElementById('tx-sidebar');
+      if (aside && !UIState.get().sidebarCollapsed) aside.style.width = w + 'px';
+    });
+
+    renderFontSizes();
+  </script>
+</body>
+</html>

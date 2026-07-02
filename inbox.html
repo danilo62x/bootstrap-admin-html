@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Caixa de entrada — Admin Template</title>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/state.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/menu.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="space-y-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-title-sm font-bold text-heading">Caixa de entrada</h1>
+          <p class="mt-1 text-sm text-muted">Gerencie suas mensagens em um só lugar.</p>
+        </div>
+        <button id="compose-open" class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"></button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <!-- Folders -->
+        <aside class="surface-card rounded-2xl border p-3 shadow-theme-sm lg:col-span-3 xl:col-span-2">
+          <nav id="folders" class="space-y-1"></nav>
+        </aside>
+
+        <!-- List -->
+        <section id="list-pane" class="surface-card rounded-2xl border shadow-theme-sm lg:col-span-4 xl:col-span-4">
+          <div class="border-b border-themed p-3">
+            <div class="relative">
+              <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" id="search-icon"></span>
+              <input id="search" placeholder="Buscar e-mails..." class="h-9 w-full rounded-lg border border-themed bg-gray-50 pl-9 pr-3 text-sm text-body outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+            </div>
+          </div>
+          <ul id="email-list" class="max-h-[640px] divide-y divide-themed overflow-y-auto"></ul>
+        </section>
+
+        <!-- Reading pane -->
+        <section id="read-pane" class="surface-card rounded-2xl border shadow-theme-sm hidden lg:block lg:col-span-5 xl:col-span-6"></section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compose modal -->
+  <div id="modal-compose" class="fixed inset-0 z-[80] items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm hidden">
+    <div class="surface-card relative w-full max-w-2xl overflow-hidden rounded-2xl border shadow-theme-xl">
+      <header class="flex items-center justify-between border-b border-themed px-5 py-4">
+        <div>
+          <h3 class="text-base font-semibold text-heading">Nova mensagem</h3>
+          <p class="mt-0.5 text-xs text-muted">Escreva e envie um e-mail</p>
+        </div>
+        <button data-modal-close type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><span id="compose-close-icon"></span></button>
+      </header>
+      <form id="compose-form" class="space-y-4 px-5 py-5">
+        <div>
+          <label class="mb-1.5 block text-xs font-medium text-muted">Para</label>
+          <input type="email" required placeholder="destinatario@email.com" class="form-control h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+        </div>
+        <div>
+          <label class="mb-1.5 block text-xs font-medium text-muted">Assunto</label>
+          <input required placeholder="Assunto da mensagem" class="form-control h-10 w-full rounded-lg border border-themed bg-gray-50 px-3 text-sm text-body outline-none focus:border-brand-300 focus-ring dark:bg-gray-900" />
+        </div>
+        <div>
+          <label class="mb-1.5 block text-xs font-medium text-muted">Mensagem</label>
+          <textarea rows="6" placeholder="Escreva sua mensagem..." class="form-control w-full rounded-lg border border-themed bg-gray-50 px-3 py-2 text-sm text-body outline-none focus:border-brand-300 focus-ring dark:bg-gray-900"></textarea>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="submit" id="compose-submit" class="btn btn-brand inline-flex h-10 items-center gap-2 rounded-lg bg-brand-500 px-4 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/layout.js"></script>
+  <script>
+    const FOLDERS = [
+      { id: 'inbox', label: 'Caixa de entrada', icon: 'mail' },
+      { id: 'sent', label: 'Enviados', icon: 'chevron-right' },
+      { id: 'drafts', label: 'Rascunhos', icon: 'edit' },
+      { id: 'starred', label: 'Com estrela', icon: 'star' },
+      { id: 'trash', label: 'Lixeira', icon: 'trash' },
+    ];
+
+    const ACCENTS = [
+      'bg-brand-100 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400',
+      'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-500',
+      'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-500',
+      'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500',
+      'bg-blue-light-50 text-blue-light-700 dark:bg-blue-light-500/15 dark:text-blue-light-500',
+    ];
+
+    let EMAILS = [
+      { id: '1', folder: 'inbox', sender: 'Marina Costa', initials: 'MC', email: 'marina.costa@empresa.com', subject: 'Proposta comercial atualizada', preview: 'Olá! Segue em anexo a versão revisada da proposta com os novos valores...', body: 'Olá!\n\nSegue em anexo a versão revisada da proposta comercial com os novos valores discutidos na reunião de ontem. Ajustei as condições de pagamento e incluí o desconto para contrato anual.\n\nPode revisar e me dizer se podemos seguir? Fico no aguardo.\n\nAbraços,\nMarina', time: '09:42', unread: true, starred: true, accent: ACCENTS[0] },
+      { id: '2', folder: 'inbox', sender: 'Equipe Financeiro', initials: 'EF', email: 'financeiro@empresa.com', subject: 'Fatura de maio disponível', preview: 'Sua fatura referente ao mês de maio já está disponível para download...', body: 'Prezado cliente,\n\nSua fatura referente ao mês de maio já está disponível para download no portal. O vencimento é dia 10/06/2026.\n\nQualquer dúvida estamos à disposição.\n\nAtenciosamente,\nEquipe Financeiro', time: '08:15', unread: true, starred: false, accent: ACCENTS[1] },
+      { id: '3', folder: 'inbox', sender: 'Lucas Pereira', initials: 'LP', email: 'lucas.p@parceiro.io', subject: 'Re: Integração da API', preview: 'Perfeito, consegui rodar os testes aqui e tudo passou. Vamos para produção?', body: 'Fala!\n\nPerfeito, consegui rodar os testes aqui no ambiente de homologação e tudo passou sem erros. As credenciais novas funcionaram normalmente.\n\nPodemos agendar o deploy para produção ainda esta semana?\n\nValeu,\nLucas', time: 'Ontem', unread: true, starred: false, accent: ACCENTS[2] },
+      { id: '4', folder: 'inbox', sender: 'Aline Souza', initials: 'AS', email: 'aline.souza@design.co', subject: 'Mockups da nova landing page', preview: 'Terminei os mockups da home e da página de preços. Dá uma olhada...', body: 'Oi!\n\nTerminei os mockups da home e da página de preços. Tentei seguir o novo guia de marca com as cores atualizadas.\n\nDeixei os arquivos no Figma, o link está no canal do projeto. Aguardo seu feedback!\n\nAbraços,\nAline', time: 'Ontem', unread: false, starred: true, accent: ACCENTS[3] },
+      { id: '5', folder: 'inbox', sender: 'Rafael Lima', initials: 'RL', email: 'rafael@enterprise.com', subject: 'Reunião de alinhamento - quinta', preview: 'Pessoal, vamos confirmar a reunião de alinhamento para quinta às 14h?', body: 'Pessoal,\n\nVamos confirmar a reunião de alinhamento para quinta-feira às 14h? Pauta:\n\n- Roadmap do trimestre\n- Métricas de retenção\n- Próximos contratos\n\nMandem confirmação de presença.\n\nObrigado,\nRafael', time: '23 mai', unread: false, starred: false, accent: ACCENTS[4] },
+      { id: '6', folder: 'sent', sender: 'Você', initials: 'EU', email: 'voce@empresa.com', subject: 'Re: Proposta comercial atualizada', preview: 'Recebido, Marina! Vou revisar hoje à tarde e te retorno até amanhã.', body: 'Recebido, Marina!\n\nVou revisar hoje à tarde e te retorno até amanhã com qualquer ajuste necessário. À primeira vista parece ótimo.\n\nObrigado,', time: '10:05', unread: false, starred: false, accent: ACCENTS[0] },
+      { id: '7', folder: 'sent', sender: 'Você', initials: 'EU', email: 'voce@empresa.com', subject: 'Relatório semanal', preview: 'Segue o relatório semanal com os principais indicadores da equipe.', body: 'Time,\n\nSegue o relatório semanal com os principais indicadores. Crescemos 8% em conversões e reduzimos o tempo de resposta do suporte.\n\nDetalhes no anexo.', time: '22 mai', unread: false, starred: false, accent: ACCENTS[1] },
+      { id: '8', folder: 'drafts', sender: 'Rascunho', initials: 'RA', email: 'voce@empresa.com', subject: 'Ideias para o próximo evento', preview: 'Algumas ideias iniciais para o evento de lançamento do produto...', body: 'Algumas ideias iniciais para o evento de lançamento do produto:\n\n- Local: auditório principal\n- Formato híbrido (presencial + online)\n- Convidar parceiros estratégicos\n\n(rascunho não finalizado)', time: '20 mai', unread: false, starred: false, accent: ACCENTS[2] },
+    ];
+
+    let activeFolder = 'inbox';
+    let selectedId = '1';
+    let search = '';
+
+    const $list = document.getElementById('email-list');
+    const $folders = document.getElementById('folders');
+    const $read = document.getElementById('read-pane');
+    const $listPane = document.getElementById('list-pane');
+    const $searchInput = document.getElementById('search');
+
+    document.getElementById('compose-open').innerHTML = icon('plus', { size: 16 }) + ' Escrever';
+    document.getElementById('compose-submit').innerHTML = icon('mail', { size: 16 }) + ' Enviar';
+    document.getElementById('search-icon').innerHTML = icon('search', { size: 16 });
+    document.getElementById('compose-close-icon').innerHTML = icon('x', { size: 20 });
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+    function folderCounts() {
+      const c = { inbox: 0, sent: 0, drafts: 0, starred: 0, trash: 0 };
+      for (const e of EMAILS) {
+        if (e.folder === 'inbox' && e.unread) c.inbox++;
+        if (e.folder === 'sent') c.sent++;
+        if (e.folder === 'drafts') c.drafts++;
+        if (e.starred) c.starred++;
+        if (e.folder === 'trash') c.trash++;
+      }
+      return c;
+    }
+
+    function getList() {
+      return EMAILS.filter((e) => {
+        const inFolder = activeFolder === 'starred' ? e.starred : e.folder === activeFolder;
+        if (!inFolder) return false;
+        if (search) {
+          const q = search.toLowerCase();
+          return e.sender.toLowerCase().includes(q) || e.subject.toLowerCase().includes(q) || e.preview.toLowerCase().includes(q);
+        }
+        return true;
+      });
+    }
+
+    function renderFolders() {
+      const counts = folderCounts();
+      $folders.innerHTML = FOLDERS.map((f) => {
+        const isActive = activeFolder === f.id;
+        const count = counts[f.id];
+        return `
+          <button data-folder="${f.id}" class="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-400' : 'text-body hover:bg-gray-50 dark:hover:bg-gray-800'}">
+            <span class="flex items-center gap-2.5">${icon(f.icon, { size: 18 })}${f.label}</span>
+            ${count > 0 ? `<span class="rounded-full px-2 py-0.5 text-xs font-semibold ${isActive ? 'bg-brand-500 text-white' : 'bg-gray-100 text-muted dark:bg-gray-800'}">${count}</span>` : ''}
+          </button>`;
+      }).join('');
+    }
+
+    function renderList() {
+      const list = getList();
+      $list.innerHTML = list.length ? list.map((e) => `
+        <li>
+          <button data-open="${e.id}" class="flex w-full gap-3 px-4 py-3 text-left transition hover:bg-gray-50 dark:hover:bg-gray-800/60 ${selectedId === e.id ? 'bg-brand-25 dark:bg-brand-500/10' : ''}">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${e.accent}">${esc(e.initials)}</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="truncate text-sm ${e.unread ? 'font-semibold text-heading' : 'text-body'}">${esc(e.sender)}</span>
+                <span class="shrink-0 text-xs text-muted">${esc(e.time)}</span>
+              </div>
+              <p class="truncate text-sm ${e.unread ? 'font-medium text-heading' : 'text-muted'}">${esc(e.subject)}</p>
+              <p class="truncate text-xs text-muted">${esc(e.preview)}</p>
+            </div>
+            <div class="flex shrink-0 flex-col items-center gap-2">
+              ${e.unread ? '<span class="mt-1 h-2 w-2 rounded-full bg-brand-500"></span>' : ''}
+              <span role="button" tabindex="0" data-star="${e.id}" class="mt-auto ${e.starred ? 'text-warning-500' : 'text-gray-300 hover:text-warning-500 dark:text-gray-600'}">${icon('star', { size: 16, className: e.starred ? 'fill-current' : '' })}</span>
+            </div>
+          </button>
+        </li>`).join('') : '<li class="px-4 py-12 text-center text-sm text-muted">Nenhuma mensagem nesta pasta.</li>';
+    }
+
+    function renderRead() {
+      const sel = EMAILS.find((e) => e.id === selectedId) || null;
+      // responsive: on mobile, show list OR read pane
+      if (sel) {
+        $listPane.classList.add('hidden', 'lg:block');
+        $listPane.classList.remove('block');
+        $read.classList.remove('hidden', 'lg:block');
+        $read.classList.add('block');
+        $read.innerHTML = `
+          <div class="flex h-full flex-col">
+            <header class="flex items-start justify-between gap-3 border-b border-themed p-5 md:p-6">
+              <div class="flex items-start gap-3">
+                <button data-back class="rounded-md p-1.5 text-muted hover:bg-gray-100 lg:hidden dark:hover:bg-gray-800" aria-label="Voltar">${icon('chevron-right', { size: 18, className: 'rotate-180' })}</button>
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${sel.accent}">${esc(sel.initials)}</span>
+                <div>
+                  <h2 class="text-base font-semibold text-heading">${esc(sel.subject)}</h2>
+                  <p class="mt-0.5 text-sm text-body">${esc(sel.sender)}</p>
+                  <p class="text-xs text-muted">${esc(sel.email)}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1">
+                <button data-star="${sel.id}" class="rounded-md p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 ${sel.starred ? 'text-warning-500' : 'text-muted'}" aria-label="Favoritar">${icon('star', { size: 18, className: sel.starred ? 'fill-current' : '' })}</button>
+                <button data-archive class="rounded-md p-1.5 text-muted hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Baixar">${icon('download', { size: 18 })}</button>
+                <button data-delete="${sel.id}" class="rounded-md p-1.5 text-muted hover:bg-error-50 hover:text-error-600 dark:hover:bg-error-500/15" aria-label="Excluir">${icon('trash', { size: 18 })}</button>
+              </div>
+            </header>
+            <div class="flex-1 whitespace-pre-line p-5 text-sm leading-relaxed text-body md:p-6">${esc(sel.body)}</div>
+            <footer class="border-t border-themed p-5 md:p-6">
+              <button data-reply class="inline-flex h-10 items-center gap-2 rounded-lg border border-themed px-4 text-sm font-medium text-body hover:bg-gray-50 dark:hover:bg-gray-800">${icon('mail', { size: 16 })} Responder</button>
+            </footer>
+          </div>`;
+      } else {
+        $listPane.classList.remove('hidden', 'lg:block');
+        $listPane.classList.add('block');
+        $read.classList.add('hidden', 'lg:block');
+        $read.classList.remove('block');
+        $read.innerHTML = `
+          <div class="flex h-full min-h-[400px] flex-col items-center justify-center gap-3 p-10 text-center">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500 dark:bg-brand-500/15">${icon('mail', { size: 26 })}</span>
+            <p class="text-sm font-medium text-heading">Selecione uma mensagem</p>
+            <p class="text-xs text-muted">Escolha um e-mail na lista para visualizar o conteúdo.</p>
+          </div>`;
+      }
+    }
+
+    function renderAll() {
+      renderFolders();
+      renderList();
+      renderRead();
+    }
+
+    function toggleStar(id) {
+      EMAILS = EMAILS.map((e) => (e.id === id ? { ...e, starred: !e.starred } : e));
+      renderAll();
+    }
+
+    // Folder navigation
+    $folders.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-folder]');
+      if (!btn) return;
+      activeFolder = btn.getAttribute('data-folder');
+      selectedId = null;
+      renderAll();
+    });
+
+    // List interactions
+    $list.addEventListener('click', (e) => {
+      const star = e.target.closest('[data-star]');
+      if (star) { e.stopPropagation(); toggleStar(star.getAttribute('data-star')); return; }
+      const open = e.target.closest('[data-open]');
+      if (open) {
+        const id = open.getAttribute('data-open');
+        selectedId = id;
+        EMAILS = EMAILS.map((x) => (x.id === id ? { ...x, unread: false } : x));
+        renderAll();
+      }
+    });
+
+    // Reading pane interactions
+    $read.addEventListener('click', (e) => {
+      if (e.target.closest('[data-back]')) { selectedId = null; renderAll(); return; }
+      const star = e.target.closest('[data-star]');
+      if (star) { toggleStar(star.getAttribute('data-star')); return; }
+      if (e.target.closest('[data-archive]')) { notify('Mensagem arquivada', 'success'); return; }
+      const del = e.target.closest('[data-delete]');
+      if (del) {
+        const id = del.getAttribute('data-delete');
+        EMAILS = EMAILS.map((x) => (x.id === id ? { ...x, folder: 'trash' } : x));
+        selectedId = null;
+        renderAll();
+        notify('Mensagem movida para a lixeira', 'success');
+        return;
+      }
+      if (e.target.closest('[data-reply]')) { openCompose(); return; }
+    });
+
+    $searchInput.addEventListener('input', (e) => { search = e.target.value; renderList(); });
+
+    // Compose modal
+    const $modal = document.getElementById('modal-compose');
+    function openCompose() { $modal.classList.remove('hidden'); $modal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
+    function closeCompose() { $modal.classList.add('hidden'); $modal.classList.remove('flex'); document.body.style.overflow = ''; }
+    document.getElementById('compose-open').addEventListener('click', openCompose);
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-modal-close]')) { closeCompose(); return; }
+      if (e.target === $modal) closeCompose();
+    });
+    document.getElementById('compose-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      closeCompose();
+      e.target.reset();
+      notify('Mensagem enviada com sucesso', 'success');
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
