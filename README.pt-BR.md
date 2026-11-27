@@ -6,8 +6,6 @@
 
 Template de admin estático feito com HTML5 puro, JavaScript vanilla e Bootstrap 5.3. Não há framework JavaScript nem build em runtime: as 25 páginas na raiz do projeto linkam uma folha de estilos compilada a partir de SCSS (`assets/css/app.css`, versionada no repositório) e alguns scripts pequenos que injetam o layout, guardam o estado da UI no localStorage e traduzem a interface. O bundle JS do Bootstrap vem do CDN jsDelivr. Cada página é um arquivo `.html` independente, então o markup pode ser colado em qualquer backend (PHP, Rails, Django, .NET, Node).
 
-Preview ao vivo: https://template.dev.br/preview/bootstrap-admin-html/
-
 ## Páginas incluídas
 
 As 25 páginas ficam na raiz do projeto.
@@ -137,11 +135,14 @@ O texto da interface vem em português e pode alternar para inglês ou espanhol.
 
 ## Templates relacionados
 
-Esta é a edição HTML estática da família Bootstrap Admin. As mesmas 25 telas existem para React 19, Vue 3, Angular 19 e Laravel 11, com um único design system. O catálogo completo, com templates grátis e pagos, está em https://template.dev.br.
+Este template também existe em outras 4 tecnologias, com as mesmas telas e a mesma identidade visual. Todas são gratuitas:
 
-## Apoie o projeto
+- React 19: https://github.com/danilo62x/bootstrap-admin-react
+- Vue 3: https://github.com/danilo62x/bootstrap-admin-vue3
+- Angular 19: https://github.com/danilo62x/bootstrap-admin-angular
+- Laravel 11: https://github.com/danilo62x/bootstrap-admin-laravel
 
-Este template é gratuito sob a licença MIT. Se ele economizou seu tempo, você pode apoiar o desenvolvimento com uma doação de qualquer valor em https://template.dev.br/doar?template=bootstrap-admin-html.
+Mais templates gratuitos (painéis admin, sistemas por segmento e apps Flutter): https://github.com/danilo62x?tab=repositories
 
 ## Licença
 
